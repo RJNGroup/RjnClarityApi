@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>
+      Sample Clarity API Map
+    </title>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.23/esri/themes/light/main.css"
+    />
+    <link
+        rel="stylesheet"
+        href="./map.css"
+    />
+    <script src="https://js.arcgis.com/4.23/"></script>
+    <script src="./map.js"></script>
+
+  </head>
+
+  <body>
+    <div class="page-grid">
+        <div class="banner" style="grid-column: 1/3">
+            <h1>Sample Clarity API Map</h1>
+        </div>
+        <div class="info-panel">
+            <!--The Information Panel-->
+            <h2>Authenticate</h2> 
+ 
+            <label for="client-id">Client ID:</label>
+            <input type="text" id="client-id" name="client-id" value="y9zEJii5"><br><br>
+            <label for="p-word">Password:</label>
+            <input type="text" id="p-word" name="p-word" value="0.rwbb5x6ghk0.oasicj3ooch0."><br><br>
+            <button type="button" onclick="AuthenticateAndLoad()">Load</button>
+
+
+            <!--The console-->
+            <div class="console " id="console"></div>
+
+        </div>
+        <div class="map-panel" >
+            <!--The Map-->
+            <div id="viewDiv"></div>
+            <div id="tableDiv" style="background: #DDD"></div>
+        </div>
+    </div>
+  </body>
+</html>
