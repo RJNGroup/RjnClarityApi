@@ -65,16 +65,16 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
             multiSortEnabled: true, // set this to true to enable sorting on multiple columns
             editingEnabled: false,
             // Autocast the FieldColumnConfigs
-            fieldConfigs: ["name", "id", "InspectionStatus"].map((attribute, index) => {
+            fieldConfigs: ["name", "id", ...additional_manhole_attributes].map((attribute, index) => {
                 return index == 0 ?
                             {
-                                name: attribute,
+                                name: attribute.toLocaleLowerCase(),
                                 label: attribute,
                                 direction: "asc"
                             }
                             :
                             {
-                                name: attribute,
+                                name: attribute.toLocaleLowerCase(),
                                 label: attribute
                             }                       
             }) 
