@@ -166,7 +166,7 @@ const manhole_renderer = {
     defaultSymbol: {
         type: "simple-marker",
         color: [215, 215, 215, 0.5],
-        outline: {width: 0.5}
+        outline: {width: 0.5, color: [100,100,100]}
     },  
     uniqueValueInfos: [
     {
@@ -175,7 +175,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [90, 0, 0, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -183,7 +183,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [150, 50, 50, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -191,7 +191,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [210, 100, 100, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -199,7 +199,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [107, 0, 103, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -207,7 +207,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [185, 185, 185, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -215,7 +215,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [20, 20, 20, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -223,7 +223,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [40, 110, 40, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -231,7 +231,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [57, 179, 56, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     }, {
         
@@ -239,7 +239,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [57, 95, 170, 1],
-            outline: {width: 0.5}
+            outline: {width: 0.5, color: [100,100,100]}
         }
     },
     ]
