@@ -16,8 +16,14 @@ The sections below describe how to use the various resources at your disposal.
 ## Basic Concepts
 
 ### Data Types
+Data Types represent a single unit of data. In other words a data record. Most inspection types must utilize two or more Data Types to facilitate one to many relationships. So, for example, a standard MACP Manhole Inspection has the StructureInspection, StructurePipeInspection, and StructureDefects Data Types, which correspond to the inspections, connections, and conditions data tables in the MACP database.
+
+Clarity's Data Types are dynamic. That means that every project will automatically contain every data type that is in use. It also means that the API is future proof. New inspection types can be registered by RJN as new services are offered and will seemlessly become available without having to update the API version or schema.
+
+To use the API affectively, one needs to know the Data Type names available on a given project. Those can be accessed using the /clarity/projects/{projectid}/datatypes path.
 
 ### Attributes
+
 
 ### GeoJSON
 
