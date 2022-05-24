@@ -16,14 +16,22 @@ The sections below describe how to use the various resources at your disposal.
 ## Basic Concepts
 
 ### Data Types
-Data Types represent a single unit of data. In other words, it is a type of data record. Most inspection types must utilize two or more Data Types to facilitate one to many relationships. So, for example, a standard MACP Manhole Inspection has the StructureInspection, StructurePipeInspection, and StructureDefects Data Types, which correspond to the inspections, connections, and conditions data tables in the MACP database.
+Data Types represent a single unit of data. In other words, it is a type of data record. Most inspection types must utilize two or more Data Types to facilitate one to many relationships. 
+
+So, for example, a standard MACP Manhole Inspection has the StructureInspection, StructurePipeInspection, and StructureDefects Data Types, which correspond to the inspections, connections, and conditions data tables in the MACP database.
 
 Clarity's Data Types are dynamic. That means that every project will automatically contain every data type that is in use. It also means that the API is future proof. New inspection types can be registered by RJN as new services are offered and will seemlessly become available without having to update the API version or schema.
 
 To use the API affectively, one needs to know the Data Type names available on a given project. Those can be accessed using the /clarity/projects/{projectid}/datatypes path.
 
 ### Attributes
+Attributes are the details of a "Data Type" (see above) or a record. Each question on a field form is filling out a single Attribute. They are essentially key / value pairs.
 
+Attributes are dynamic. This enables RJN to customize data collection to the clients' needs without having to update the API version or schema.
+
+When querying a single record, by default, all Attributes will be returned as a dictionary type object. When using paths that return all records (the /list or /geojson paths), the attributes are not included by default. However, the attribute_list query parameter can be set to include a comma-delimited list of Attributes that will dynamically extend the schema of the output.  
+
+To use the attribute_list extension feature, one must know what attributes are available on a given project and Data Type. That can be queried using the path, /clarity/projects/{projectid}/{datatype}/attributes.
 
 ### GeoJSON
 
