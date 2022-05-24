@@ -34,6 +34,7 @@ When querying a single record, by default, all Attributes will be returned as a 
 To use the attribute_list extension feature, one must know what attributes are available on a given project and Data Type. That can be queried using the path, /clarity/projects/{projectid}/{datatype}/attributes.
 
 ### GeoJSON
+The GeoJSON path (/clarity/{datatype}/geojson) facilitates easy integration with the ArcGIS JavaScript API or any other mapping application that accepts the standard GeoJson format. See the samples directory in this repository for some simple implementations to get you started.
 
 ## Documentation in Swagger
 
