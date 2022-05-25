@@ -63,9 +63,11 @@ To run in Postman:
 
 ## Example Projects
 
-### ArcGIS JavaScript API with Manhole Inspections
+### ArcGIS JS Web Map - Smoke Observation
 
-### PowerBI Connector
+
+### ArcGIS JS Web Map - Manhole Surface Type
+
 
 ### C# Demo App
 
