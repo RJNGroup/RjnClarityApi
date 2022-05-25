@@ -5,7 +5,13 @@ var token;
 var token_expires;
 const base_url = "https://rjn-clarity-api.com/v1/clarity";
 
-require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/widgets/FeatureTable", "esri/widgets/Legend", "esri/popup/content/CustomContent"], (Map, MapView, GeoJSONLayer, FeatureTable, Legend, CustomContent) => {
+require(["esri/Map", 
+        "esri/views/MapView", 
+        "esri/layers/GeoJSONLayer", 
+        "esri/widgets/FeatureTable", 
+        "esri/widgets/Legend", 
+        "esri/popup/content/CustomContent"], 
+        (Map, MapView, GeoJSONLayer, FeatureTable, Legend, CustomContent) => {
 
 
     map = new Map({
@@ -47,10 +53,9 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
 
         LogStep("Loading Layer @ " + url);
 
-        //Define the popup content
-        const content = new CustomContent({
-            outFields: ["*"],
-            creator: (event) => {
+        //Define the popup content]
+        /*
+        var content = (event) => {
                 var observation = event.attributes.observation;
                 var intensity = event.attributes.smokeintensity;
                 var medialist = JSON.parse(event.attributes.medialist);
@@ -69,8 +74,8 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
                     });
 
                 
-            }        
-        });
+            };      */
+        
 
         //Define the layer
         let smoke_layer = new GeoJSONLayer({
@@ -83,7 +88,26 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
             popupTemplate: { // autocasts as new PopupTemplate(),
                 outFields: ["*"],
                 title: "{name}",
-                content: [content]
+                content: (event) => {
+                    var observation = event.graphic.attributes.observation;
+                    var intensity = event.graphic.attributes.smokeintensity;
+                    var medialist = JSON.parse(event.graphic.attributes.medialist);
+    
+                    return Promise.all(medialist.map(m => GetMediaURL(m.id).then((url) => m["url"] = url)))
+                        .then((value) => {    
+                            return `
+                            <p>Observation: <strong>${observation}</strong></p> 
+                            <p>Intensity: <strong>${intensity}</strong></p>
+                            <hr>
+                            ${ medialist.filter(m => m.type == "Photo")
+                                .map(m => `<figure>
+                                                <img src='${m.url}'>
+                                                <figcaption>${m.name}</figcaption>
+                                            </figure>`).join("")
+                            }
+                            `;
+                        });           
+                }
             },
         });
 
@@ -188,7 +212,13 @@ async function Authenticate() {
 
 async function GetMediaURL(mediaid) {
     let url = base_url + "/media/" + mediaid + "?token=" + token;
-    return await fetch(url);
+    return await fetch(url)
+            .then((res) => {
+                return res.text();
+            } )
+            .catch((err) => {
+                console.error(err)
+            });
 }
 
 //If I color by EVERY observation type, the map is going to get crazy.

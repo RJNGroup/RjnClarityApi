@@ -37,7 +37,8 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
         */
         let additional_manhole_attributes = [
             { name: "inspectionstatus", label: "Inspection Status" },
-            { name: "macp_locationcode", label: "Location Code" }
+            { name: "macp_locationcode", label: "Location Code" },
+            { name: "medialist", label: "medialist" }
         ];
 
         //Create the URL, we can add the additional attributes as a query parameter (and don't forget the token!)
@@ -57,8 +58,28 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
             renderer: manhole_renderer,
             popupTemplate: { // autocasts as new PopupTemplate(),
                 title: "{name}",
-                content: "<p>Status: {inspectionstatus}</p> <p>Location Code: {macp_locationcode}</p>",
-                overwriteActions: true
+                content: (event) => {
+                    var inspectionstatus = event.graphic.attributes.inspectionstatus;
+                    var macp_locationcode = event.graphic.attributes.macp_locationcode;
+                    var medialist = JSON.parse(event.graphic.attributes.medialist);
+    
+                    return Promise.all(medialist.map(m => GetMediaURL(m.id).then((url) => m["url"] = url)))
+                        .then((value) => {    
+                            return `
+                            <p>Status: <strong>${inspectionstatus}</strong></p> 
+                            <p>Location: <strong>${macp_locationcode}</strong></p>
+                            <hr>
+                            ${ medialist.filter(m => m.type == "Photo")
+                                .map(m => `<figure>
+                                                <img src='${m.url}'>
+                                                <figcaption>${m.name}</figcaption>
+                                            </figure>`).join("")
+                            }
+                            `;
+                        });
+    
+                    
+                }
             },
         });
 
@@ -95,6 +116,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
             columnReorderingEnabled : true,
             highlightOnRowSelectEnabled: true,
             fieldConfigs: ["id", "name", ...additional_manhole_attributes.map(a => a.name)]
+                    .filter(a => a != "medialist")
                     .map(attribute => {
                             var added = additional_manhole_attributes.find(a => a.name == attribute); //See if this is one of the additional attributes defined 
                             var label = added ? added.label : attribute; //if it is, get the "nice" label we defined above.
@@ -157,6 +179,16 @@ async function Authenticate() {
 
 }
 
+async function GetMediaURL(mediaid) {
+    let url = base_url + "/media/" + mediaid + "?token=" + token;
+    return await fetch(url)
+            .then((res) => {
+                return res.text();
+            } )
+            .catch((err) => {
+                console.error(err)
+            });
+}
 
 //Defines the layer styling styling
 const manhole_renderer = {
@@ -166,7 +198,7 @@ const manhole_renderer = {
     defaultSymbol: {
         type: "simple-marker",
         color: [215, 215, 215, 0.5],
-        outline: {width: 0.5, color: [100,100,100]}
+        outline: {width: 0.5, color: [50,50,50]}
     },  
     uniqueValueInfos: [
     {
@@ -175,7 +207,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [90, 0, 0, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -183,7 +215,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [150, 50, 50, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -191,7 +223,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [210, 100, 100, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -199,7 +231,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [107, 0, 103, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -207,7 +239,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [185, 185, 185, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -215,7 +247,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [20, 20, 20, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -223,7 +255,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [40, 110, 40, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -231,7 +263,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [57, 179, 56, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     }, {
         
@@ -239,7 +271,7 @@ const manhole_renderer = {
         symbol: {
             type: "simple-marker",  
             color: [57, 95, 170, 1],
-            outline: {width: 0.5, color: [100,100,100]}
+            outline: {width: 0.5, color: [50,50,50]}
         }
     },
     ]
