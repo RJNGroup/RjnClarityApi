@@ -16,7 +16,9 @@ The sections below describe how to use the various resources at your disposal.
 ## Basic Concepts
 
 ### Authentication
-Authentication is token based. Before any API route can be called a JWT (JSON Web Token) must be generated. The token can be reused until it expires 24 hours after issue. Once it expires (or before that time) a new token must be generated. Tokens may be submitted in two ways:
+Authentication is token based. Before any API route can be called a JWT (JSON Web Token) must be generated. The token can be reused until it expires. Tokens have a limited lifetime of 24 hours. Once it expires (or before that time) a new token should be generated. 
+
+Tokens may be submitted in two ways:
 1. An Authorization: Bearer [token] header.
 2. A token query parameter (i.e. ?token=[token]).
 
