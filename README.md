@@ -61,13 +61,13 @@ To run in Postman:
 7. In the Collections tab, run the "datatypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {datatype} path parameter (see the Swagger documentation) to get data of various types.
 
 
-## Example Projects
+## Sample Projects
 
 ### ArcGIS JS Web Map - Smoke Observation
-
+A single page map and data table that demonstrate how to use the geojeson path to show smoke observations. It includes examples of how to configure additional attributes to the features and pull photos for the popup templates.
 
 ### ArcGIS JS Web Map - Manhole Surface Type
-
+Similar to the smoke observations map, it is a single page map and data table that demonstrate how to use the geojeson path to show manhole inspections. It includes examples of how to configure additional attributes to the features and pull photos for the popup templates.
 
 ### C# Demo App
 
