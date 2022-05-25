@@ -15,8 +15,13 @@ The sections below describe how to use the various resources at your disposal.
 
 ## Basic Concepts
 
+### Authentication
+Authentication is token based. Before any API route can be called a JWT (JSON Web Token) must be generated. The token can be reused until it expires 24 hours after issue. Once it expires (or before that time) a new token must be generated. Tokens may be submitted in two ways:
+1. An Authorization: Bearer [token] header.
+2. A token query parameter (i.e. ?token=[token]).
+
 ### Data Types
-Data Types represent a single unit of data. In other words, it is a type of data record. Most inspection types must utilize two or more Data Types to facilitate one to many relationships. 
+Data Types, in this context, represent a single unit of data. In other words, it is a type of data record. Most inspection types must utilize two or more Data Types to facilitate one-to-many relationships. 
 
 So, for example, a standard MACP Manhole Inspection has the StructureInspection, StructurePipeInspection, and StructureDefects Data Types, which correspond to the inspections, connections, and conditions data tables in the MACP database.
 
