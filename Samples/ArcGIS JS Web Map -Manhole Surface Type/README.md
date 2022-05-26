@@ -8,7 +8,8 @@ In this example, I chose to render the layer based on the "MACP Location Code" f
 or doesn't have that field filled out, you may need to modify the code to use a different field that you do have filled out.
 
 ## To Run The Demo
-1. Install the "Live Server" extension in Visual Code if you don't already have it.
-2. Press "F1".
-3. In the command popup, search and click "Live Server - Open with Live Server". This will launch the demo in your default browser.
-4. On the demo webpage, enter the Client ID and Password you were provided into the fields and click "Load".
+1. Open the map.html file. 
+2. Install the "Live Server" extension in Visual Code if you don't already have it.
+3. Press "F1".
+4. In the command popup, search and click "Live Server - Open with Live Server". This will launch the demo in your default browser.
+5. On the demo webpage, enter the Client ID and Password you were provided into the fields and click "Load".

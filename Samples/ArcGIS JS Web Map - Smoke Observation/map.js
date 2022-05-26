@@ -126,8 +126,7 @@ function LoadLayers() { } //Just a placeholder
 //This is the Load button click handler.
 async function AuthenticateAndLoad() {
     ClearConsole();
-    await Authenticate();
-    LoadLayers();
+    if (await Authenticate()) LoadLayers();
 }
 
 //This generates the token
@@ -136,11 +135,12 @@ async function Authenticate() {
     var client_id = document.getElementById("client-id").value;
     var password = document.getElementById("p-word").value;
     var url = base_url + "/auth";
+    const start_time = new Date();
 
     LogStep("Authenticating...")
 
     //Send a post request to authenticate and generate a token
-    await fetch(url, {
+    return await fetch(url, {
         method: "POST",
         headers: {
             'Accept': 'application/json'
@@ -152,10 +152,12 @@ async function Authenticate() {
             token = credentials.token;
             token_expires = credentials.expires;
 
-            LogStep("Got token: " + token);
+            LogStep("Got token - " + (new Date().valueOf() - start_time.valueOf()) + 'ms');
+            return true;
         })
         .catch(err => {
-            LogStep("Failed to authenticate: " + err);
+            LogStep("Failed to authenticate --- " + err);
+            return false;
         });
 
 }
