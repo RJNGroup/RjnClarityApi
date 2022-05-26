@@ -56,3 +56,13 @@ body,
 .show-it {
     display: block;
 }
+
+.esri-feature-content p {
+    margin: 0;
+}
+
+.esri-feature-content figcaption {
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 800;
+}

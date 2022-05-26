@@ -5,9 +5,13 @@ var token;
 var token_expires;
 const base_url = "https://rjn-clarity-api.com/v1/clarity";
 
-
-
-require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/widgets/FeatureTable", "esri/widgets/Legend"], (Map, MapView, GeoJSONLayer, FeatureTable, Legend) => {
+require(["esri/Map", 
+        "esri/views/MapView", 
+        "esri/layers/GeoJSONLayer", 
+        "esri/widgets/FeatureTable", 
+        "esri/widgets/Legend", 
+        "esri/popup/content/CustomContent"], 
+        (Map, MapView, GeoJSONLayer, FeatureTable, Legend, CustomContent) => {
 
 
     map = new Map({
@@ -38,7 +42,8 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
         let additional_smoke_attributes = [
             { name: "drainagearea", label: "Drainage Area (ft)" },
             { name: "streetnumber", label: "Address" },
-            { name: "streetname", label: "Street" }
+            { name: "streetname", label: "Street" }, 
+            { name: "medialist", label: "medialist"}
         ];
 
         //Create the URL, we can add the additional attributes as a query parameter (and don't forget the token!)
@@ -47,6 +52,30 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
         const start_time = new Date();
 
         LogStep("Loading Layer @ " + url);
+
+        //Define the popup content]
+        /*
+        var content = (event) => {
+                var observation = event.attributes.observation;
+                var intensity = event.attributes.smokeintensity;
+                var medialist = JSON.parse(event.attributes.medialist);
+
+                console.log(event)
+                return Promise.all(medialist.map(m => GetMediaURL(m.id).then((url) => m["url"] = url)))
+                    .then((value) => {
+                        
+                    console.log(medialist)
+
+                        return `
+                        <p>Observation: ${observation}</p> 
+                        <p>Intensity: ${intensity}</p>
+                        ${medialist.filter(m => m.type == "Photo").map(m => "<img src='" + m.url + "'>")}
+                `
+                    });
+
+                
+            };      */
+        
 
         //Define the layer
         let smoke_layer = new GeoJSONLayer({
@@ -57,9 +86,28 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
             outFields: ["name", "id", ...additional_smoke_attributes.map(a => a.name)],
             renderer: smoke_renderer,
             popupTemplate: { // autocasts as new PopupTemplate(),
+                outFields: ["*"],
                 title: "{name}",
-                content: "<p>Observation: {Observation}</p> <p>Intensity: {SmokeIntensity}</p>",
-                overwriteActions: true
+                content: (event) => {
+                    var observation = event.graphic.attributes.observation;
+                    var intensity = event.graphic.attributes.smokeintensity;
+                    var medialist = JSON.parse(event.graphic.attributes.medialist);
+    
+                    return Promise.all(medialist.map(m => GetMediaURL(m.id).then((url) => m["url"] = url)))
+                        .then((value) => {    
+                            return `
+                            <p>Observation: <strong>${observation}</strong></p> 
+                            <p>Intensity: <strong>${intensity}</strong></p>
+                            <hr>
+                            ${ medialist.filter(m => m.type == "Photo")
+                                .map(m => `<figure>
+                                                <img src='${m.url}'>
+                                                <figcaption>${m.name}</figcaption>
+                                            </figure>`).join("")
+                            }
+                            `;
+                        });           
+                }
             },
         });
 
@@ -98,6 +146,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
             columnReorderingEnabled : true,
             highlightOnRowSelectEnabled: true,
             fieldConfigs: ["id", "observation", "smokeintensity", ...additional_smoke_attributes.map(a => a.name)]
+                    .filter(a => a != "medialist")
                     .map(attribute => {
                             var added = additional_smoke_attributes.find(a => a.name == attribute); //See if this is one of the additional attributes defined 
                             var label = added ? added.label : attribute; //if it is, get the "nice" label we defined above.
@@ -118,6 +167,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/wid
         });
     }
 });
+
 
 
 function LoadLayers() { } //Just a placeholder
@@ -162,95 +212,73 @@ async function Authenticate() {
 
 }
 
+async function GetMediaURL(mediaid) {
+    let url = base_url + "/media/" + mediaid + "?token=" + token;
+    return await fetch(url)
+            .then((res) => {
+                return res.text();
+            } )
+            .catch((err) => {
+                console.error(err)
+            });
+}
+
+//If I color by EVERY observation type, the map is going to get crazy.
+//We can combine several of the observations that are similar (such as public and private cleanouts or laterals)
+//and wind up with a more coherent map.
+const ObservationsSimplified = [
+    {name: "Private Drain", color: [217, 95, 20], obs: ["Area Drain", "Driveway Drain", "Patio Drain", "Window Well Drain", "Stairwell Drain"]},
+    {name: "Cleanout", color: [73, 104, 104], obs: ["Cleanout Defective", "Cleanout Defective, Public", "Cleanout, Missing/Broken Cap", "Cleanout Missing/Broken Cap, Public"]},
+    {name: "Downspout", color: [177, 114, 42], obs: ["Downspout", "Downspout, Disconnected", "Downspout U G (Multi Defects)"]},
+    {name: "Foundation Drain", color: [90, 22, 22], obs: ["Foundation Drain"]},
+    {name: "Lateral", color: [6, 21, 67], obs: ["Lateral", "Lateral, Public", "Sidewalk", "Curb and Gutter", "Water Valve Box", "Storm Ditch"]},
+    {name: "Mainline", color: [9, 55, 87], obs: ["Mainline (Multiple Defects)", "Sanitary Mainline"]},
+    {name: "Manhole", color: [80, 132, 155],obs: ["Manhole (Pick Holes)", "Manhole Upstream", "Private Sanitary Manhole", "Manhole Cover", "Manhole Downstream"]},
+    {name: "Storm Connection", color: [255, 38, 60], obs: ["Storm Manhole", "Storm Sewer Cleanout", "Catch Basin", "Private Storm Manhole", "Storm Inlet"]},
+    {name: "Sump Pump", color: [164, 75, 75], obs: ["Sump Pump"]},
+];
+
 
 //Defines the layer styling styling
 const smoke_renderer = {
     type: "unique-value",  
-    field: "Observation",
+    valueExpression: 
+            //Create an arcade expression that looks up the simplified defect name from the actual Observation field
+            `return When(${ObservationsSimplified.map(o => o.obs.map(obs => "$feature.observation == '" + obs + "','" + o.name + "'").join(',')).join(",")}, 'Other');`
+            ,
     legendOptions: { title: "Location Code" },
     defaultSymbol: {
         type: "simple-marker",
-        color: [215, 215, 215, 0.5],
-        outline: {width: 0.5}
+        color: [215, 215, 215],
+        outline: {width: 0.5, color: [100, 100, 100]}
     },  
-    uniqueValueInfos: [
-    {
-        
-        value: "Main Highway - Urban",
-        symbol: {
-            type: "simple-marker",  
-            color: [90, 0, 0, 1],
-            outline: {width: 0.5}
+
+    //Color based on observation type
+    uniqueValueInfos: ObservationsSimplified.map(o => {
+                                      return {
+                                          value: o.name,
+                                          symbol: {
+                                              type: "simple-marker",
+                                              color: o.color,
+                                              outline: {width: 0.5, color: [100, 100, 100]}
+                                          }
+                                      };  
+                                    }),
+    //Size based on Smoke Intensity
+    visualVariables: [
+        {
+            type: "size",
+            valueExpression: "return When($feature.smokeintensity == 'Low', 1, $feature.smokeintensity == 'Medium', 2, $feature.smokeintensity == 'High', 3, 0);",
+            stops: [
+                {value: 1, size: 5, label: "Low"},
+                {value: 2, size: 10, label: "Medium"},
+                {value: 3, size: 20, label: "High"},
+            ]
         }
-    }, {
-        
-        value: "Main Highway - Suburban",
-        symbol: {
-            type: "simple-marker",  
-            color: [150, 50, 50, 1],
-            outline: {width: 0.5}
-        }
-    }, {
-        
-        value: "Light Highway",
-        symbol: {
-            type: "simple-marker",  
-            color: [210, 100, 100, 1],
-            outline: {width: 0.5}
-        }
-    }, {
-        
-        value: "Railway",
-        symbol: {
-            type: "simple-marker",  
-            color: [107, 0, 103, 1],
-            outline: {width: 0.5}
-        }
-    }, {
-        
-        value: "Sidewalk",
-        symbol: {
-            type: "simple-marker",  
-            color: [185, 185, 185, 1],
-            outline: {width: 0.5}
-        }
-    }, {
-        
-        value: "Parking Lot",
-        symbol: {
-            type: "simple-marker",  
-            color: [20, 20, 20, 1],
-            outline: {width: 0.5}
-        }
-    }, {
-        
-        value: "Easement/Right of Way",
-        symbol: {
-            type: "simple-marker",  
-            color: [40, 110, 40, 1],
-            outline: {width: 0.5}
-        }
-    }, {
-        
-        value: "Yard",
-        symbol: {
-            type: "simple-marker",  
-            color: [57, 179, 56, 1],
-            outline: {width: 0.5}
-        }
-    }, {
-        
-        value: "Ditch",
-        symbol: {
-            type: "simple-marker",  
-            color: [57, 95, 170, 1],
-            outline: {width: 0.5}
-        }
-    },
     ]
+    
+ 
 };
-
-
 
 function ClearConsole() {
     var c = document.getElementById("console");
