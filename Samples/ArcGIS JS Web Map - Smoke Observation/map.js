@@ -53,30 +53,6 @@ require(["esri/Map",
 
         LogStep("Loading Layer @ " + url);
 
-        //Define the popup content]
-        /*
-        var content = (event) => {
-                var observation = event.attributes.observation;
-                var intensity = event.attributes.smokeintensity;
-                var medialist = JSON.parse(event.attributes.medialist);
-
-                console.log(event)
-                return Promise.all(medialist.map(m => GetMediaURL(m.id).then((url) => m["url"] = url)))
-                    .then((value) => {
-                        
-                    console.log(medialist)
-
-                        return `
-                        <p>Observation: ${observation}</p> 
-                        <p>Intensity: ${intensity}</p>
-                        ${medialist.filter(m => m.type == "Photo").map(m => "<img src='" + m.url + "'>")}
-                `
-                    });
-
-                
-            };      */
-        
-
         //Define the layer
         let smoke_layer = new GeoJSONLayer({
             url: url,
