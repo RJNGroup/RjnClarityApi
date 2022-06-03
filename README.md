@@ -76,5 +76,4 @@ A single page map and data table that demonstrate how to use the geojeson path t
 ### ArcGIS JS Web Map - Manhole Surface Type
 Similar to the smoke observations map, it is a single page map and data table that demonstrate how to use the geojeson path to show manhole inspections. It includes examples of how to configure additional attributes to the features and pull photos for the popup templates.
 
-### C# Demo App
 
