@@ -95,6 +95,17 @@ namespace Clarity
             }
             return ApiCaller.GetResponseJson<MonitorSiteEntity[]>(_auth, $"/projects/{_project}/sites/{site}/entities");
         }
+
+        /// <summary>
+        /// Gets an array of flow meter site entities (raw sensor data or calculated measurement entities).
+        /// </summary>
+        /// <param name="project"></param>
+        /// <param name="entity_name"></param>
+        /// <returns>An array of MonitorSiteEntity objects</returns>
+        public MonitorSiteEntity[] GetMonitorEntities(Guid project, string entity_name)
+        {
+            return ApiCaller.GetResponseJson<MonitorSiteEntity[]>(_auth, $"/projects/{project}/entities/{entity_name}");
+        }
         #endregion
     }
 }
