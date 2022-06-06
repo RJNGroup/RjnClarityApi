@@ -114,12 +114,19 @@ namespace Sample_Clarity_API_App
 				//Get the bound item
 				var item = cell.OwningRow.DataBoundItem;
 
-				//Call the new data getter method on the item and get the results
-				object[] prms = { _api };
-				object[] results = (object[])item.GetType().GetMethod(method).Invoke(item, prms);
+				try
+				{   //Call the new data getter method on the item and get the results
+					object[] prms = { _api };
+					object[] results = (object[])item.GetType().GetMethod(method).Invoke(item, prms);
 
-				//Put the new results on the data grid
-				SetDataGrid(results);
+					//Put the new results on the data grid
+					SetDataGrid(results);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+				}
+
 			}
 		}
 	}

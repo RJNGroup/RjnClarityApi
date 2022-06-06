@@ -17,10 +17,16 @@ namespace Clarity.ResponseObjects
 		/// </summary>
 		/// <param name="api"></param>
 		/// <returns></returns>
-		public DataType[] GetDataTypes(Api api) {
-			return api.GetDataTypes(id);
-		}
-	
+		public DataType[] GetDataTypes(Api api) => api.GetDataTypes(id);
+
+		/// <summary>
+		/// Gets an array of flow meter sites.
+		/// </summary>
+		/// <param name="api"></param>
+		/// <returns></returns>
+		public MonitorSite[] GetMonitorSites(Api api) => api.GetMonitorSites(id);
+
+
 		public override string ToString()
 		{
 			return projectnumber + ": " + description;

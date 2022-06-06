@@ -17,12 +17,12 @@ namespace Clarity
         public Api(string client_id, string password)
         {
             _auth = new Authorizer(client_id, password);
-		}
+        }
 
         public bool Validate()
         {
             return _auth.Validate();
-		}
+        }
 
         #region General
 
@@ -56,5 +56,45 @@ namespace Clarity
 
         #endregion
 
+        #region Flow Monitoring
+        /// <summary>
+        /// Gets an array of flow meter sites.
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns>An array of MonitorSite objects</returns>
+        public MonitorSite[] GetMonitorSites(Guid project)
+        {
+            var results = ApiCaller.GetResponseJson<MonitorSite[]>(_auth, $"/projects/{project}/sites");
+
+            //Cache the sites list for later reference
+            if (!_SiteProjectMap.ContainsKey(project))
+            {
+                _SiteProjectMap.Add(project, new List<MonitorSite>());
+            }
+            _SiteProjectMap[project] = results.ToList();
+
+            return results;
+        }
+
+        private Dictionary<Guid, List<MonitorSite>> _SiteProjectMap = new Dictionary<Guid, List<MonitorSite>>();
+
+        /// <summary>
+        /// Gets an array of flow meter site entities (raw sensor data or calculated measurement entities).
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns>An array of MonitorSiteEntity objects</returns>
+        public MonitorSiteEntity[] GetMonitorEntities(Guid? project, Guid site)
+        {
+            Guid _project;
+            if (project.HasValue) {
+                _project = project.Value;
+            }
+            else 
+            {
+                _project = _SiteProjectMap.SingleOrDefault(k => k.Value.SingleOrDefault(s => s.id == site) != null).Key;
+            }
+            return ApiCaller.GetResponseJson<MonitorSiteEntity[]>(_auth, $"/projects/{_project}/sites/{site}/entities");
+        }
+        #endregion
     }
 }
