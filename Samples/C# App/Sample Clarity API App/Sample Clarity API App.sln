@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample Clarity API App", "Sample Clarity API App\Sample Clarity API App.csproj", "{469F229E-D05C-4C57-8EDF-88033311F6FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clarity.Api", "Clarity.Api\Clarity.Api.csproj", "{4FF32F5B-07B0-49EE-A2B1-E4163BBADE29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{469F229E-D05C-4C57-8EDF-88033311F6FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{469F229E-D05C-4C57-8EDF-88033311F6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{469F229E-D05C-4C57-8EDF-88033311F6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{469F229E-D05C-4C57-8EDF-88033311F6FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FF32F5B-07B0-49EE-A2B1-E4163BBADE29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FF32F5B-07B0-49EE-A2B1-E4163BBADE29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FF32F5B-07B0-49EE-A2B1-E4163BBADE29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FF32F5B-07B0-49EE-A2B1-E4163BBADE29}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE8DB1FD-9D21-447F-8D26-85DBA69E15E9}
+	EndGlobalSection
+EndGlobal
