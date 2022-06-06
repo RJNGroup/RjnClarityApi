@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Clarity.ResponseObjects
 {
@@ -13,7 +14,9 @@ namespace Clarity.ResponseObjects
 		public string name { get; set; }
 		public int record_count { get; set; }
 		public string list_path { get; set; }
-		public string[] geo_json_layers { get; set; }
+
+		string geo_json_layers;
+		public string[] geoJsonLayers { get => JsonConvert.DeserializeObject<string[]>(geo_json_layers); }
 
 		public override string ToString() 
 		{

@@ -70,20 +70,27 @@ namespace Sample_Clarity_API_App
 
 		private void SetDataGrid(object[] items)
 		{
+			//Clear any old columns
+			dataGrid.DataSource = null;
+			dataGrid.Columns.Clear();
+
+			//Set the new bindings
 			dataGrid.AutoGenerateColumns = true;
 			var b = new BindingSource();
 			b.DataSource = items;
 			b.ResetBindings(true);
 			dataGrid.DataSource = b;
-			ExtendDataGridWithButtons(items);
+
+			//Include the Drill-down buttons
+			ExtendDataGridWithDrillDowns(items);
 		}
 
-		private void ExtendDataGridWithButtons(object[] items)
+		private void ExtendDataGridWithDrillDowns(object[] items)
 		{
 			if (items.Length > 0)
 			{
 				//Get the methods on the class
-				var methods = items.First().GetType().GetMethods();
+				var methods = items.First().GetType().GetMethods().Where(m => !m.IsSpecialName && !m.IsVirtual && m.Name != "GetType");
 				foreach (var method in methods)
 				{
 					//Add a button column for each method
@@ -97,14 +104,22 @@ namespace Sample_Clarity_API_App
 
 		private void dataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
+			//Get the clicked cell
 			var cell = dataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
 			if (cell is DataGridViewButtonCell)
 			{
-				//Handle the event
+				//Get the method name which will just be the column name
 				var method = cell.OwningColumn.Name;
+
+				//Get the bound item
 				var item = cell.OwningRow.DataBoundItem;
+
+				//Call the new data getter method on the item and get the results
 				object[] prms = { _api };
-				item.GetType().GetMethod(method).Invoke(item, prms);
+				object[] results = (object[])item.GetType().GetMethod(method).Invoke(item, prms);
+
+				//Put the new results on the data grid
+				SetDataGrid(results);
 			}
 		}
 	}
