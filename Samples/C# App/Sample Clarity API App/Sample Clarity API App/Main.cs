@@ -11,6 +11,7 @@ using Clarity.ResponseObjects;
 using System.Reflection;
 using Sample_Clarity_API_App.UserInput;
 using Clarity.RequestParameters;
+using Clarity.Utilities;
 
 namespace Sample_Clarity_API_App
 {
@@ -18,6 +19,8 @@ namespace Sample_Clarity_API_App
 	{
 
 		Clarity.Api _api = null;
+
+		List<BindingSource> resultsCache = new List<BindingSource>();
 
 		public Main()
 		{
@@ -33,7 +36,17 @@ namespace Sample_Clarity_API_App
 
 		private void submit_button_Click(object sender, EventArgs e)
 		{
+			//Create the new API passing the credentials
 			_api = new Clarity.Api(client_id.Text.Trim(), password.Text.Trim());
+
+			//Wire up the api events
+			_api.ClarityHttpCall += (object _sender, ClarityHttpCallEventArgs _e) => OutputHttpCall(_e.path);
+			_api.ClarityHttpError += (object _sender, ClarityHttpCallErrorEventArgs _e) => MessageBox.Show(_e.e.Message + (_e.result.Length < 1000 ? "\n\n" + _e.result : ""));
+
+			//Output the function call
+			OutputFunction($"var api = new Clarity.Api(\"{client_id.Text.Trim()}\", \"{password.Text.Trim()}\");");
+
+			//Validate and hand UI settings
 			if (_api.Validate())
 			{
 				SetValidLogin();
@@ -58,20 +71,33 @@ namespace Sample_Clarity_API_App
 			dataGettersGroup.Enabled = true;
 		}
 
-		private void projects_Click(object sender, EventArgs e)
+		private void OutputFunction(string line)
 		{
-			var items = _api.GetProjects();
-			SetDataGrid(items);
+			txtFunctionCalls.Text += line += "\n\n";
+			txtFunctionCalls.Select(txtFunctionCalls.Text.Length - 1, 0);
+			txtFunctionCalls.ScrollToCaret();
+
 		}
 
-		private void project_status_Click(object sender, EventArgs e)
+		private void OutputHttpCall(string line)
 		{
-			var items = _api.GetProjectProgress();
-			SetDataGrid(items);
+			txtHttpCalls.Text += line += "\n";
+			txtHttpCalls.Select(txtHttpCalls.Text.Length - 1, 0);
+			txtHttpCalls.ScrollToCaret();
 		}
+
 
 		private void SetDataGrid(object[] items)
 		{
+
+			if (dataGrid.DataSource != null)
+			{
+				//Cache the old results
+				BindingSource oldBinding = (BindingSource)dataGrid.DataSource;
+				resultsCache.Add(oldBinding);
+				back_button.Visible = true;
+			}
+
 			//Clear any old columns
 			dataGrid.DataSource = null;
 			dataGrid.Columns.Clear();
@@ -87,9 +113,32 @@ namespace Sample_Clarity_API_App
 			ExtendDataGridWithDrillDowns(items);
 		}
 
+		private void SetDataGridBack()
+		{
+			if (resultsCache.Count > 0)
+			{
+				//Get the last result
+				var result = resultsCache.Last();
+
+				//Remove from the cache
+				resultsCache.Remove(result);
+
+				//Hide the button if we are all the way back
+				if (resultsCache.Count == 0) back_button.Visible = false;
+
+				//Clear any old columns
+				dataGrid.DataSource = null;
+				dataGrid.Columns.Clear();
+
+				//Set the datasource
+				dataGrid.DataSource = result;
+				ExtendDataGridWithDrillDowns((object[])result.DataSource);
+			}
+		}
+
 		private void ExtendDataGridWithDrillDowns(object[] items)
 		{
-			if (items.Length > 0)
+			if (items?.Length > 0)
 			{
 				//Get the methods on the class
 				var methods = items.First().GetType().GetMethods().Where(m => !m.IsSpecialName && !m.IsVirtual && m.Name != "GetType");
@@ -132,11 +181,16 @@ namespace Sample_Clarity_API_App
 						prms = UserInputUtil.GetUserParameters(_api, item, requestParams);
 					}
 
+					//Show the function calls
+					var itemClassName = item.GetType().Name;
+					OutputFunction($"var {itemClassName}{e.RowIndex} = {itemClassName}Results[{e.RowIndex}];");
+					OutputFunction($"var {method.ReturnType.Name.Replace("[]", "")}Results = {itemClassName}{e.RowIndex}.{methodName}({string.Join(",", prms.Select(p => ParameterToString(p)))});");
+
 					//Call the method and get the results
 					object[] results = (object[])method.Invoke(item, prms);
 
 					//Put the new results on the data grid
-					SetDataGrid(results);
+					if (results != null) SetDataGrid(results);
 				}
 				catch (Exception ex)
 				{
@@ -145,5 +199,55 @@ namespace Sample_Clarity_API_App
 
 			}
 		}
+
+		private string ParameterToString(object p)
+		{
+			if (p == null)
+			{
+				return "null";
+			}
+			else if (p is Enum)
+			{
+				return p.GetType().Name + "." + p.ToString();
+			}
+			else if (p is Clarity.Api) 
+			{
+				return "api";
+			}
+			else if (p is string || p is DateTime)
+			{
+				return "\"" + p.ToString() + "\"";
+			}
+			else
+			{
+				return p.ToString();
+			}
+		}
+
+		private void projects_Click(object sender, EventArgs e)
+		{
+			var items = _api.GetProjects();
+			OutputFunction($"var ProjectResults = api.GetProjects();");
+			SetDataGrid(items);
+		}
+
+		private void project_status_Click(object sender, EventArgs e)
+		{
+			var items = _api.GetProjectProgress();
+			OutputFunction($"var ProjectProgressResults = api.GetProjectProgress();");
+			if (items != null) SetDataGrid(items);
+		}
+		private void button1_Click(object sender, EventArgs e)
+		{
+			var items = _api.GetMonitorBatteryStatus();
+			OutputFunction($"var MonitorBatteryResults = api.GetMonitorBatteryStatus();");
+			if (items != null) SetDataGrid(items);
+		}
+
+		private void back_button_Click(object sender, EventArgs e)
+		{
+			SetDataGridBack();
+		}
+
 	}
 }

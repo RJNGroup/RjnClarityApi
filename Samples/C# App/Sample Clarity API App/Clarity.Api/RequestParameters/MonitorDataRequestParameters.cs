@@ -19,7 +19,7 @@ namespace Clarity.RequestParameters
 		public string entityid { get; set; }
 
 		[Browsable(true), Category("Date Range"), DisplayName("from*"), Description("REQUIRED: The lower bound date and time to query the data.")]
-		public DateTime from { get; set; } = DateTime.Now.AddDays(-7);
+		public DateTime from { get; set; } = DateTime.Now.AddDays(-7).Date;
 
 		[Browsable(true), Category("Date Range"), Description("The upper bound date and time to query the data. If left blank, the upper bound is assumed to be now.")]
 		public DateTime? to { get; set; } = null;

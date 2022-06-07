@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Clarity.RequestParameters;
+using Clarity.Enums;
 
 namespace Clarity.ResponseObjects
 {
@@ -26,6 +28,17 @@ namespace Clarity.ResponseObjects
 		/// <param name="api"></param>
 		/// <returns>An array of MonitorSiteEntity objects</returns>
 		public MonitorEntity[] GetMonitorSiteEntities(Api api) => api.GetMonitorEntities(null, id);
+
+
+		/// <summary>
+		/// Gets all work orders that match the filters provided.
+		/// </summary>
+		/// <param name="status_filter">OPTIONAL: A list of statuses to filter for. By default, the query will return all open work orders.</param>
+		/// <param name="modified_after">OPTIONAL: Gets work orders modified after a specific date.</param>
+		/// <returns></returns>
+		public WorkOrder[] GetWorkOrders(Api api, WorkOrderStatus[] status_filter = null, DateTime? modified_after = null) => api.GetWorkOrders(api.GetProjectFromSiteId(id), id, status_filter, modified_after);
+
+		public WorkOrderRequestParameters GetWorkOrdersRequestParameters = new WorkOrderRequestParameters();
 
 	}
 }

@@ -5,19 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Clarity.Utilities;
 using Clarity.ResponseObjects;
+using Clarity.RequestParameters;
 using Clarity.Enums;
+using Newtonsoft.Json;
 
 namespace Clarity
 {
     public class Api
     {
 
+
         private Authorizer _auth;
         public Authorizer Authorizer { get { return _auth; } }
 
         public Api(string client_id, string password)
         {
-            _auth = new Authorizer(client_id, password);
+            _auth = new Authorizer(this, client_id, password);
         }
 
         public bool Validate()
@@ -25,7 +28,31 @@ namespace Clarity
             return _auth.Validate();
         }
 
+        #region Events
+        public delegate void ClarityHttpCallHandler(object sender, ClarityHttpCallEventArgs e);
+        public delegate void ClarityHttpCallErrorHandler(object sender, ClarityHttpCallErrorEventArgs e);
+
+        public event ClarityHttpCallHandler ClarityHttpCall;
+        public event ClarityHttpCallErrorHandler ClarityHttpError;
+
+        public void RaiseClarityHttpCallEvent(string path)
+        {
+            ClarityHttpCall?.Invoke(this, new ClarityHttpCallEventArgs(path));
+        }
+
+        public void RaiseClarityHttpCallErrorEvent(Exception e, string result)
+        {
+            ClarityHttpError?.Invoke(this, new ClarityHttpCallErrorEventArgs(e, result));
+        }
+        #endregion
+
+
         #region General
+
+        private string FormatQueryDate(DateTime d)
+        {
+            return d.ToString("yyyy-MM-ddTHH:mm:00.000");
+		}
 
         /// <summary>
         /// Get the all projects authorized for the user.
@@ -54,6 +81,16 @@ namespace Clarity
         {
             return ApiCaller.GetResponseJson<DataType[]>(_auth, $"/projects/{project}/datatypes");
         }
+
+        /// <summary>
+        /// Gets the pre-signed URL of the media file hosted on AWS.
+        /// </summary>
+        /// <param name="media_id"></param>
+        /// <returns></returns>
+        public string GetMediaURL(Guid media_id)
+        {
+            return ApiCaller.GetResponseJson<string>(_auth, $"/media/{media_id}");
+		}
 
         #endregion
 
@@ -154,8 +191,8 @@ namespace Clarity
 
             //Create the query parameter list
             var query = new Dictionary<string, string>();
-            query.Add("from", from.ToString("yyyy-MM-ddTHH:mm:00.000"));
-            if (to.HasValue) query.Add("to", to.Value.ToString("yyyy-MM-ddTHH:mm:00.000"));
+            query.Add("from", FormatQueryDate(from));
+            if (to.HasValue) query.Add("to", FormatQueryDate(to.Value));
             if (unitid > 0) query.Add("unit", unitid.ToString());
             query.Add("interval", ((int)interval).ToString());
             query.Add("aggregation", aggregation.ToString());
@@ -166,6 +203,86 @@ namespace Clarity
             //Transform the result
             return result.Select(k => new MonitorDataPoint(k.Key, k.Value)).ToArray();
         }
+
+        /// <summary>
+        /// Pushes flow monitor data into Clarity.
+        /// </summary>
+        /// <param name="project">The project guid.</param>
+        /// <param name="entityid">The destination entity identifier.</param>
+        /// <param name="data">A dictionary of time and value key/value pairs.</param>
+        /// <param name="interval">The recording interval in seconds. If variable interval is utilized, set this as the "slow" mode interval.</param>
+        /// <param name="import_mode">Specify how to handle existing data within the import window.</param>
+        /// <param name="incoming_time">Specify the type of timezone of the data being imported.</param>
+        /// <param name="local_timezone">OPTIONAL: Only set this if the incoming timezone is UTC.</param>
+        /// <returns>A status message.</returns>
+        public string PushMonitorData(Guid project, string entityid, Dictionary<DateTime, double?> data, int interval, ImportMode import_mode, ImportTimeType incoming_time, LocalTimezoneOption local_timezone = LocalTimezoneOption.Unset, string comments = null) 
+        {
+            //Add the query parameters
+            var query = new Dictionary<string, string>();
+            query.Add("interval", interval.ToString());
+            query.Add("import_mode", import_mode.ToString());
+            query.Add("incoming_time", incoming_time.ToString());
+            query.Add("local_timezone", local_timezone.ToString());
+
+            //Create the body
+            var body = JsonConvert.SerializeObject(new DataImportBody(data, comments));
+
+            //Post the data
+            return ApiCaller.PostData(_auth, body, $"/projects/{project}/entities/{entityid}/data", query);
+        }
+
+
+        /// <summary>
+        /// Gets an array of batteries at all active sites with last reading and days-to-low threshold predictions.
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns>An array of MonitorBattery objects</returns>
+        public MonitorBattery[] GetMonitorBatteryStatus()
+        {
+            return ApiCaller.GetResponseJson<MonitorBattery[]>(_auth, $"/sites/battery");
+        }
+
+        /// <summary>
+        /// Gets all active alarms.
+        /// </summary>
+        /// <param name="project">The project guid.</param>
+        /// <returns>An array of MonitorAlarm objects</returns>
+        public MonitorAlarm[] GetActiveAlarms(Guid project)
+        {
+            return ApiCaller.GetResponseJson<MonitorAlarm[]>(_auth, $"/projects/{project}/alarms");
+        }
+
+
+        /// <summary>
+        /// Gets all active alarms.
+        /// </summary>
+        /// <param name="project">The project guid.</param>
+        /// <param name="timeframe">The timeframe to look back in hours.</param>
+        /// <returns>An array of MonitorAlarm objects</returns>
+        public MonitorAlarm[] GetAlarms(Guid project, int timeframe)
+        {
+            return ApiCaller.GetResponseJson<MonitorAlarm[]>(_auth, $"/projects/{project}/alarms/{timeframe}");
+        }
+
+        /// <summary>
+        /// Gets all work orders that match the filters provided.
+        /// </summary>
+        /// <param name="project">The project guid.</param>
+        /// <param name="siteid">OPTIONAL: A site guid for filtering work orders by site.</param>
+        /// <param name="status_filter">OPTIONAL: A list of statuses to filter for. By default, the query will return all open work orders.</param>
+        /// <param name="modified_after">OPTIONAL: Gets work orders modified after a specific date.</param>
+        /// <returns></returns>
+        public WorkOrder[] GetWorkOrders(Guid project, Guid? siteid = null, WorkOrderStatus[] status_filter = null, DateTime? modified_after = null)
+        {
+            //Get the query parameters
+            var query = new Dictionary<string, string>();
+            if (siteid.HasValue) query.Add("siteid", siteid.ToString());
+            if (status_filter != null) query.Add("status", string.Join(",", status_filter));
+            if (modified_after.HasValue) query.Add("modified_after", FormatQueryDate(modified_after.Value));
+
+            //Get the work orders
+            return ApiCaller.GetResponseJson<WorkOrder[]>(_auth, $"/projects/{project}/workorders", query);
+		}
 
         #endregion
     }

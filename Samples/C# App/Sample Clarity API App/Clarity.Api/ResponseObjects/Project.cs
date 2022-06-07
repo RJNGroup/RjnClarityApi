@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Clarity.RequestParameters;
+using Clarity.Enums;
 
 namespace Clarity.ResponseObjects
 {
@@ -41,6 +43,34 @@ namespace Clarity.ResponseObjects
 		/// <param name="project"></param>
 		/// <returns>An array of MonitorEntityName objects</returns>
 		public MonitorUnit[] GetMonitorUnits(Api api) => api.GetMonitorUnits(id);
+
+		/// <summary>
+		/// Gets all active alarms.
+		/// </summary>
+		/// <param name="project">The project guid.</param>
+		/// <returns>An array of MonitorAlarm objects</returns>
+		public MonitorAlarm[] GetActiveAlarms(Api api) => api.GetActiveAlarms(id);
+
+		/// <summary>
+		/// Gets all active alarms.
+		/// </summary>
+		/// <param name="project">The project guid.</param>
+		/// <param name="timeframe">The timeframe to look back in hours.</param>
+		/// <returns>An array of MonitorAlarm objects</returns>
+		public MonitorAlarm[] GetAlarms(Api api, int timeframe) => api.GetAlarms(id, timeframe);
+
+		public MonitorAlarmRequestParameters GetAlarmsRequestParameters = new MonitorAlarmRequestParameters();
+
+		/// <summary>
+		/// Gets all work orders that match the filters provided.
+		/// </summary>
+		/// <param name="project">The project guid.</param>
+		/// <param name="status_filter">OPTIONAL: A list of statuses to filter for. By default, the query will return all open work orders.</param>
+		/// <param name="modified_after">OPTIONAL: Gets work orders modified after a specific date.</param>
+		/// <returns></returns>
+		public WorkOrder[] GetWorkOrders(Api api, WorkOrderStatus[] status_filter = null, DateTime? modified_after = null) => api.GetWorkOrders(id, null, status_filter, modified_after);
+
+		public WorkOrderRequestParameters GetWorkOrdersRequestParameters = new WorkOrderRequestParameters();
 
 		public override string ToString()
 		{
