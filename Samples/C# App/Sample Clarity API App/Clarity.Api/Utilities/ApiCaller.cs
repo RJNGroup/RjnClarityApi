@@ -19,7 +19,8 @@ namespace Clarity.Utilities
 			//Generate the URL
 
 			//Create the web request
-			var request = System.Net.HttpWebRequest.Create(CreateUri(path, query));
+			var uri = CreateUri(path, query);
+			var request = System.Net.HttpWebRequest.Create(uri);
 			request.Method = "GET";
 
 			//Add the token
@@ -31,9 +32,15 @@ namespace Clarity.Utilities
 			{
 				var reader = new StreamReader(response.GetResponseStream());
 				var responseJson = reader.ReadToEnd();
-				var responseObj = JsonConvert.DeserializeObject<T>(responseJson);
+				try
+				{
+					return JsonConvert.DeserializeObject<T>(responseJson);
+				}
+				catch (Exception e)
+				{
+					throw new Exception(responseJson + " --- " + e.Message);
+				}
 
-				return responseObj;
 			}
 		}
 
@@ -46,7 +53,7 @@ namespace Clarity.Utilities
 				q = "";
 				foreach (var param in query)
 				{
-					q += q.Length > 0 ? "," : "?" + param.Key + "=" + System.Web.HttpUtility.UrlEncode( param.Value);
+					q += q.Length > 0 ? "&" : "?" + param.Key + "=" + System.Web.HttpUtility.UrlEncode( param.Value);
 				}
 			}
 

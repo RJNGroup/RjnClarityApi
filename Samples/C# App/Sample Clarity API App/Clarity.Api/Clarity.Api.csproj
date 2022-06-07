@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,10 +47,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api.cs" />
+    <Compile Include="Enums\AggregationInterval.cs" />
+    <Compile Include="Enums\AggregationType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestParameters\IRequestParameters.cs" />
+    <Compile Include="RequestParameters\MonitorDataRequestParameters.cs" />
     <Compile Include="ResponseObjects\DataType.cs" />
+    <Compile Include="ResponseObjects\MonitorDataPoint.cs" />
+    <Compile Include="ResponseObjects\MonitorEntityName.cs" />
     <Compile Include="ResponseObjects\MonitorSite.cs" />
-    <Compile Include="ResponseObjects\MonitorSiteEntity.cs" />
+    <Compile Include="ResponseObjects\MonitorEntity.cs" />
+    <Compile Include="ResponseObjects\MonitorUnit.cs" />
     <Compile Include="ResponseObjects\Project.cs" />
     <Compile Include="ResponseObjects\ProjectProgress.cs" />
     <Compile Include="Utilities\ApiCaller.cs" />

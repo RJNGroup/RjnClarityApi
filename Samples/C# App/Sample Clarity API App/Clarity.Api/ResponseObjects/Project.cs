@@ -27,6 +27,21 @@ namespace Clarity.ResponseObjects
 		public MonitorSite[] GetMonitorSites(Api api) => api.GetMonitorSites(id);
 
 
+		/// <summary>
+		/// Gets an array of flow meter site entity names for the project (raw sensor data or calculated measurement entities).
+		/// </summary>
+		/// <param name="api"></param>
+		/// <returns></returns>
+		public MonitorEntityName[] GetMonitorEntityNames(Api api) => api.GetMonitorEntityNames(id);
+
+
+		/// <summary>
+		/// Gets an array of units configured on the project.
+		/// </summary>
+		/// <param name="project"></param>
+		/// <returns>An array of MonitorEntityName objects</returns>
+		public MonitorUnit[] GetMonitorUnits(Api api) => api.GetMonitorUnits(id);
+
 		public override string ToString()
 		{
 			return projectnumber + ": " + description;

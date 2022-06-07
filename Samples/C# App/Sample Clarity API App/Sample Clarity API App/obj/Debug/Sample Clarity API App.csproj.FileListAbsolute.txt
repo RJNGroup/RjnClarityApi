@@ -13,3 +13,4 @@ C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Debug\Sample Clarity API App.csproj.CopyComplete
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Debug\Sample Clarity API App.exe
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Debug\Sample Clarity API App.pdb
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Debug\Sample_Clarity_API_App.UserInput.ParametersDialog.resources

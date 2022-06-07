@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Clarity.ResponseObjects;
 using System.Reflection;
+using Sample_Clarity_API_App.UserInput;
+using Clarity.RequestParameters;
 
 namespace Sample_Clarity_API_App
 {
@@ -109,15 +111,29 @@ namespace Sample_Clarity_API_App
 			if (cell is DataGridViewButtonCell)
 			{
 				//Get the method name which will just be the column name
-				var method = cell.OwningColumn.Name;
+				var methodName = cell.OwningColumn.Name;
 
 				//Get the bound item
 				var item = cell.OwningRow.DataBoundItem;
 
 				try
-				{   //Call the new data getter method on the item and get the results
+				{
+					//See what parameters the method has
+					var method = item.GetType().GetMethod(methodName);
+
+					//Initialize the method parameters with just the api object			
 					object[] prms = { _api };
-					object[] results = (object[])item.GetType().GetMethod(method).Invoke(item, prms);
+
+					//Get user input if necessary to get the params
+					var fields = item.GetType().GetFields();
+					var requestParams = (IRequestParameters)item.GetType().GetFields().SingleOrDefault(f => f.Name == methodName + "RequestParameters")?.GetValue(item);
+					if (requestParams != null) 
+					{
+						prms = UserInputUtil.GetUserParameters(_api, item, requestParams);
+					}
+
+					//Call the method and get the results
+					object[] results = (object[])method.Invoke(item, prms);
 
 					//Put the new results on the data grid
 					SetDataGrid(results);

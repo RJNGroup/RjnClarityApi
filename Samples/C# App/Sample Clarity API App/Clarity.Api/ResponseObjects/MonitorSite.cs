@@ -25,7 +25,7 @@ namespace Clarity.ResponseObjects
 		/// </summary>
 		/// <param name="api"></param>
 		/// <returns>An array of MonitorSiteEntity objects</returns>
-		public MonitorSiteEntity[] GetMonitorSiteEntities(Api api) => api.GetMonitorEntities(null, id);
+		public MonitorEntity[] GetMonitorSiteEntities(Api api) => api.GetMonitorEntities(null, id);
 
 	}
 }
