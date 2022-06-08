@@ -53,7 +53,7 @@ namespace Clarity.Utilities
 		{
 			var json = GetResponseJsonRaw(auth, path, query);
 			if (json.Length == 0) return default(T);
-
+			
 			try
 			{
 				return JsonConvert.DeserializeObject<T>(json);

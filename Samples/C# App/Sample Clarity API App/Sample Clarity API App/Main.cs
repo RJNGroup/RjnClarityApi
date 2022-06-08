@@ -249,6 +249,10 @@ namespace Sample_Clarity_API_App
 			{
 				return "api";
 			}
+			else if (p is DateTime)
+			{
+				return "DateTime.Parse(\"" + p.ToString() + "\")";  
+			}
 			else if (p is string || p is DateTime)
 			{
 				return "\"" + p.ToString() + "\"";

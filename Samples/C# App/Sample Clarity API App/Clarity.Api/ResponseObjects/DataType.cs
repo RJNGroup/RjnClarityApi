@@ -14,11 +14,10 @@ namespace Clarity.ResponseObjects
 		public string inspection_type { get; set; }
 		public string data_type { get; set; }
 		public string name { get; set; }
-		public int record_count { get; set; }
+		public int? record_count { get; set; }
 		public string list_path { get; set; }
 		public Guid projectid { get; set; }
 		public string geo_json_layers { get; set; }
-
 		public string[] GetLayersArray { get => JsonConvert.DeserializeObject<string[]>(geo_json_layers); }
 
 		public override string ToString() 

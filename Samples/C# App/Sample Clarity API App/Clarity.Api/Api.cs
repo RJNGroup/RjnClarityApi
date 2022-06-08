@@ -75,11 +75,14 @@ namespace Clarity
         /// <summary>
         /// Gets the data types that can be queried such as Struct Inspection, Smoke Testing, or Flow Metering Mainteannce.
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="project">The project guid.</param>
+        /// <param name="include_counts">Setting this to true REALLY slows down the query, so only do it if you must.</param>
         /// <returns>An array of DataType objects</returns>
-        public DataType[] GetDataTypes(Guid project)
+        public DataType[] GetDataTypes(Guid project, bool include_counts = false)
         {
-            var items = ApiCaller.GetResponseJson<DataType[]>(_auth, $"/projects/{project}/datatypes");
+            var query = new Dictionary<string, string>();
+            query.Add("include_counts", include_counts.ToString().ToLower());
+            var items = ApiCaller.GetResponseJson<DataType[]>(_auth, $"/projects/{project}/datatypes", query);
             foreach (var item in items)
             {
                 item.projectid = project;

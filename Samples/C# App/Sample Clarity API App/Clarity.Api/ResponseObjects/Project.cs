@@ -19,7 +19,9 @@ namespace Clarity.ResponseObjects
 		/// </summary>
 		/// <param name="api"></param>
 		/// <returns></returns>
-		public DataType[] GetDataTypes(Api api) => api.GetDataTypes(id);
+		public DataType[] GetDataTypes(Api api, bool include_counts = false) => api.GetDataTypes(id, include_counts);
+
+		public DataTypesRequestParameters GetDataTypesRequestParameters = new DataTypesRequestParameters();
 
 		/// <summary>
 		/// Gets an array of flow meter sites.
