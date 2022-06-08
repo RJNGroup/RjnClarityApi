@@ -13,7 +13,7 @@ namespace Clarity.Utilities
 	{
 		const string base_uri = "https://rjn-clarity-api.com/v1/clarity";
 
-		public static T GetResponseJson<T>(Authorizer auth, string path, Dictionary<string, string> query = null)
+		public static string GetResponseJsonRaw(Authorizer auth, string path, Dictionary<string, string> query = null)
 		{
 
 			//Generate the URL
@@ -38,16 +38,32 @@ namespace Clarity.Utilities
 				{
 					var reader = new StreamReader(response.GetResponseStream());
 					responseJson = reader.ReadToEnd();
-					return JsonConvert.DeserializeObject<T>(responseJson);
+					return responseJson;
 				}
 			}
 			catch (Exception e)
 			{
 				//Raise an error
 				auth.api.RaiseClarityHttpCallErrorEvent(e, responseJson);
+				return "";
+			}
+		}
+
+		public static T GetResponseJson<T>(Authorizer auth, string path, Dictionary<string, string> query = null)
+		{
+			var json = GetResponseJsonRaw(auth, path, query);
+			if (json.Length == 0) return default(T);
+
+			try
+			{
+				return JsonConvert.DeserializeObject<T>(json);
+			}
+			catch (Exception e)
+			{               
+			    //Raise an error
+				auth.api.RaiseClarityHttpCallErrorEvent(e, json);
 				return default(T);
 			}
-
 		}
 
 

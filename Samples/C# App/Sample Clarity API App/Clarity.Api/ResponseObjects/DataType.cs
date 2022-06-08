@@ -17,9 +17,9 @@ namespace Clarity.ResponseObjects
 		public int record_count { get; set; }
 		public string list_path { get; set; }
 		public Guid projectid { get; set; }
+		public string geo_json_layers { get; set; }
 
-		string geo_json_layers;
-		public string[] geoJsonLayers { get => JsonConvert.DeserializeObject<string[]>(geo_json_layers); }
+		public string[] GetLayersArray { get => JsonConvert.DeserializeObject<string[]>(geo_json_layers); }
 
 		public override string ToString() 
 		{
@@ -47,7 +47,24 @@ namespace Clarity.ResponseObjects
 		/// <returns></returns>
 		public DataTable GetDataRecordTable(Api api, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null) => api.GetDataRecordTable(data_type, projectid, created_after, modified_after, attributes);
 
-		public DataRecordRequestParameters GetRecordListRequestParameters = new DataRecordRequestParameters();
+		/// <summary>
+		/// For internal use.
+		/// </summary>
+		public DataRecordRequestParameters GetDataRecordTableRequestParameters = new DataRecordRequestParameters();
+
+		/// <summary>
+		/// Gets all filtered data in the GeoJSON format.
+		/// </summary>
+		/// <param name="created_after">Optional filter by created date.</param>
+		/// <param name="modified_after">Optional filter for modified date.</param>
+		/// <param name="attributes">Optionally request additional attributes to return with the query.</param>
+		/// <returns>Returns a JSON string in the GeoJSON format.</returns>
+		public string GetGeoJson(Api api, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null) => api.GetGeoJson(data_type, projectid, created_after, modified_after, attributes);
+		
+		/// <summary>
+		/// For internal use.
+		/// </summary>
+		public DataRecordRequestParameters GetGeoJsonRequestParameters = new DataRecordRequestParameters();
 
 	}
 }

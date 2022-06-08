@@ -46,12 +46,14 @@ namespace Sample_Clarity_API_App
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.dataGrid = new System.Windows.Forms.DataGridView();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.txtFunctionCalls = new System.Windows.Forms.RichTextBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.txtHttpCalls = new System.Windows.Forms.RichTextBox();
+			this.recordinfo_button = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.dataGettersGroup.SuspendLayout();
@@ -101,6 +103,7 @@ namespace Sample_Clarity_API_App
 			// 
 			// dataGettersGroup
 			// 
+			this.dataGettersGroup.Controls.Add(this.recordinfo_button);
 			this.dataGettersGroup.Controls.Add(this.button1);
 			this.dataGettersGroup.Controls.Add(this.back_button);
 			this.dataGettersGroup.Controls.Add(this.project_status);
@@ -255,6 +258,7 @@ namespace Sample_Clarity_API_App
 			// 
 			// panel2
 			// 
+			this.panel2.Controls.Add(this.richTextBox1);
 			this.panel2.Controls.Add(this.dataGrid);
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -262,6 +266,17 @@ namespace Sample_Clarity_API_App
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(805, 324);
 			this.panel2.TabIndex = 2;
+			// 
+			// richTextBox1
+			// 
+			this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.richTextBox1.Location = new System.Drawing.Point(86, 120);
+			this.richTextBox1.Name = "richTextBox1";
+			this.richTextBox1.ReadOnly = true;
+			this.richTextBox1.Size = new System.Drawing.Size(100, 96);
+			this.richTextBox1.TabIndex = 2;
+			this.richTextBox1.Text = "";
+			this.richTextBox1.Visible = false;
 			// 
 			// dataGrid
 			// 
@@ -344,6 +359,16 @@ namespace Sample_Clarity_API_App
 			this.txtHttpCalls.TabIndex = 1;
 			this.txtHttpCalls.Text = "";
 			// 
+			// recordinfo_button
+			// 
+			this.recordinfo_button.Location = new System.Drawing.Point(6, 106);
+			this.recordinfo_button.Name = "recordinfo_button";
+			this.recordinfo_button.Size = new System.Drawing.Size(162, 23);
+			this.recordinfo_button.TabIndex = 4;
+			this.recordinfo_button.Text = "Record Info";
+			this.recordinfo_button.UseVisualStyleBackColor = true;
+			this.recordinfo_button.Click += new System.EventHandler(this.recordinfo_button_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -401,6 +426,8 @@ namespace Sample_Clarity_API_App
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Button back_button;
 		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.RichTextBox richTextBox1;
+		private System.Windows.Forms.Button recordinfo_button;
 	}
 }
 

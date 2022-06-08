@@ -59,9 +59,10 @@
     <Compile Include="RequestParameters\IRequestParameters.cs" />
     <Compile Include="RequestParameters\MonitorAlarmRequestParameters.cs" />
     <Compile Include="RequestParameters\MonitorDataRequestParameters.cs" />
+    <Compile Include="RequestParameters\RecordInfoRequestParameters.cs" />
     <Compile Include="RequestParameters\WorkOrderRequestParameters.cs" />
     <Compile Include="ResponseObjects\DataAttribute.cs" />
-    <Compile Include="ResponseObjects\IDataListObject.cs" />
+    <Compile Include="ResponseObjects\DataRecordInfo.cs" />
     <Compile Include="ResponseObjects\DataReportGroup.cs" />
     <Compile Include="ResponseObjects\DataType.cs" />
     <Compile Include="ResponseObjects\MonitorAlarm.cs" />

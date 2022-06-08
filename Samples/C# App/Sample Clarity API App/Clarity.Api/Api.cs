@@ -322,103 +322,77 @@ namespace Clarity
         /// <param name="created_after">Optional filter by created date.</param>
         /// <param name="modified_after">Optional filter for modified date.</param>
         /// <param name="attributes">Optionally request additional attributes to return with the query.</param>
-        /// <returns></returns>
+        /// <returns>A data table with the records including the additional attribute columns.</returns>
         public DataTable GetDataRecordTable(string datatype, Guid? projectid = null, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null)
         {
-            bool hasAttributes = (attributes != null && attributes.Length > 0) ? true : false;
+       
+            //Create the query
+            var query = new Dictionary<string, string>();
+            if (projectid.HasValue) query.Add("projectid", projectid.Value.ToString());
+            if (created_after.HasValue) query.Add("created_after", FormatQueryDate(created_after.Value));
+            if (modified_after.HasValue) query.Add("modified_after", FormatQueryDate(modified_after.Value));
+            if (attributes != null && attributes.Length > 0) query.Add("attribute_list", string.Join(",", attributes));
+
+            //Get the items
+            var items = ApiCaller.GetResponseJson<Dictionary<string,object>[]>(_auth, $"/{datatype}/list", query);
+
+            //Convert to data table
+            return Data.DataRecordsToDataTable(items, attributes);
+
+
+        }
+
+        /// <summary>
+        /// Gets all filtered data in the GeoJSON format.
+        /// </summary>
+        /// <param name="datatype"></param>
+        /// <param name="projectid">Optional project guid filter.</param>
+        /// <param name="created_after">Optional filter by created date.</param>
+        /// <param name="modified_after">Optional filter for modified date.</param>
+        /// <param name="attributes">Optionally request additional attributes to return with the query.</param>
+        /// <returns>Returns a JSON string in the GeoJSON format.</returns>
+        public string GetGeoJson(string datatype, Guid? projectid = null, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null)
+        {
 
             //Create the query
             var query = new Dictionary<string, string>();
             if (projectid.HasValue) query.Add("projectid", projectid.Value.ToString());
             if (created_after.HasValue) query.Add("created_after", FormatQueryDate(created_after.Value));
             if (modified_after.HasValue) query.Add("modified_after", FormatQueryDate(modified_after.Value));
-            if (hasAttributes) query.Add("attribute_list", string.Join(",", attributes));
+            if (attributes != null && attributes.Length > 0) query.Add("attribute_list", string.Join(",", attributes));
 
-            //Get the items
-            var items = ApiCaller.GetResponseJson<Dictionary<string,object>[]>(_auth, $"/{datatype}/list", query);
-
-            //Generate the data table
-            var table = new DataTable();
-            table.Columns.Add(new DataColumn("id", typeof(Guid)));
-            DataColumn[] key = { table.Columns[0] };
-            table.PrimaryKey = key;
-            table.Columns.Add(new DataColumn("parent_id", typeof(Guid)));
-            table.Columns.Add(new DataColumn("project_id", typeof(Guid)));
-            table.Columns.Add(new DataColumn("name", typeof(string)));
-            table.Columns.Add(new DataColumn("created", typeof(DateTime)));
-            table.Columns.Add(new DataColumn("modified", typeof(DateTime)));
-            table.Columns.Add(new DataColumn("info_path", typeof(string)));
-
-            //Create the additional columns
-            if (hasAttributes)
-            {
-                foreach (var attribute in attributes)
-                {
-                    //Determine type
-                    Type T = typeof(string);
-                    foreach (var item in items) 
-                    {
-                        if (item.ContainsKey(attribute) && item[attribute] != null)
-                        {
-                            if (item[attribute] is int)
-                            {
-                                T = typeof(int);
-                                break;
-							}
-                            else if(item[attribute] is double)
-                            {
-                                T = typeof(double);
-                                break;
-							}
-                            else if(item[attribute] is DateTime)
-                            {
-                                T = typeof(DateTime);
-                                break;
-							}
-
-                        }
-                  
-					}
-                    table.Columns.Add(new DataColumn(attribute, T));
-                }
-			}
-
-            //Add the rows
-            foreach (var item in items)
-            {
-                var row = new List<object>();
-                row.Add(item["id"]);
-                row.Add(item["parent_id"]);
-                row.Add(item["project_id"]);
-                row.Add(item["name"]);
-                row.Add(item["created"]);
-                row.Add(item["modified"]);
-                row.Add(item["info_path"]);
-
-                if (hasAttributes)
-                {
-                    foreach (var attribute in attributes)
-                    {
-                        if (item.ContainsKey(attribute) && item[attribute] != null)
-                        {
-                            row.Add(item[attribute]);
-                        }
-                        else
-                        {
-                            row.Add(DBNull.Value);
-						}
-                    }
-                }
-
-
-                table.Rows.Add(row.ToArray());
-			}
-
-
-            return table;
-
+            //Get the json
+            return ApiCaller.GetResponseJsonRaw(_auth, $"/{datatype}/geojson", query);
 
         }
+
+        /// <summary>
+        /// Gets all related info for a data record.
+        /// </summary>
+        /// <param name="datatype">The data type, such as "SmokeObservation" or "StructureInspection"</param>
+        /// <param name="record_id">The record guid.</param>
+        /// <param name="attribute_info">Return all attributes.</param>
+        /// <param name="pretty_attributes">Use the human-friendly labels for the attributes rather than the name identifiers.</param>
+        /// <param name="media_info">Return a list of related media.</param>
+        /// <param name="coordinate_info">Return the location coordinates.</param>
+        /// <param name="parent_info">Return related parent record if exists.</param>
+        /// <param name="child_info">Return related child records (if they exist). This will recursively get all children and grandchildren.</param>
+        /// <returns>Returns a DataRecordInfo object.</returns>
+        public DataRecordInfo GetRecordInfo(string datatype, Guid record_id, bool attribute_info = true, bool pretty_attributes = false, bool media_info = true, bool coordinate_info = true, bool parent_info = false, bool child_info = false)
+        {
+            //Create the query
+            var query = new Dictionary<string, string>();
+            query.Add("attribute_info", attribute_info.ToString().ToLower());
+            query.Add("pretty_attributes", pretty_attributes.ToString().ToLower());
+            query.Add("media_info", media_info.ToString().ToLower());
+            query.Add("coordinate_info", coordinate_info.ToString().ToLower());
+            query.Add("parent_info", parent_info.ToString().ToLower());
+            query.Add("child_info", child_info.ToString().ToLower());
+
+            //Get the item
+            return ApiCaller.GetResponseJson<DataRecordInfo>(_auth, $"/{datatype}/{record_id}/info", query);
+        }
+
         #endregion
     }
 }

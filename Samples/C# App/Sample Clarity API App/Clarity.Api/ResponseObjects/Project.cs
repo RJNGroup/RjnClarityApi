@@ -59,6 +59,9 @@ namespace Clarity.ResponseObjects
 		/// <returns>An array of MonitorAlarm objects</returns>
 		public MonitorAlarm[] GetAlarms(Api api, int timeframe) => api.GetAlarms(id, timeframe);
 
+		/// <summary>
+		/// For internal use.
+		/// </summary>
 		public MonitorAlarmRequestParameters GetAlarmsRequestParameters = new MonitorAlarmRequestParameters();
 
 		/// <summary>
@@ -70,6 +73,9 @@ namespace Clarity.ResponseObjects
 		/// <returns></returns>
 		public WorkOrder[] GetWorkOrders(Api api, WorkOrderStatus[] status_filter = null, DateTime? modified_after = null) => api.GetWorkOrders(id, null, status_filter, modified_after);
 
+		/// <summary>
+		/// For internal use.
+		/// </summary>
 		public WorkOrderRequestParameters GetWorkOrdersRequestParameters = new WorkOrderRequestParameters();
 
 		public override string ToString()

@@ -90,6 +90,7 @@ namespace Sample_Clarity_API_App
 		private void SetDataGrid(object items)
 		{
 
+
 			if (dataGrid.DataSource != null)
 			{
 				//Cache the old results
@@ -102,21 +103,51 @@ namespace Sample_Clarity_API_App
 			dataGrid.DataSource = null;
 			dataGrid.Columns.Clear();
 
-			//Set the new bindings
-			dataGrid.AutoGenerateColumns = true;
-			var b = new BindingSource();
-			b.DataSource = items;
-			b.ResetBindings(true);
-			dataGrid.DataSource = b;
 
-			//Include the Drill-down buttons
-			ExtendDataGridWithDrillDowns(items);
+			//Handle the UI
+			if (items is Array || items is DataTable)
+			{
+				richTextBox1.Visible = false;
+				richTextBox1.Dock = DockStyle.None;
+
+				dataGrid.Visible = true;
+				dataGrid.Dock = DockStyle.Fill;
+
+				//Set the new bindings
+				dataGrid.AutoGenerateColumns = true;
+				var b = new BindingSource();
+				b.DataSource = items;
+				b.ResetBindings(true);
+				dataGrid.DataSource = b;
+
+				//Include the Drill-down buttons
+				ExtendDataGridWithDrillDowns(items);
+			}
+			else
+			{
+				dataGrid.Visible = false;
+				dataGrid.Dock = DockStyle.None;
+
+				richTextBox1.Visible = true;
+				richTextBox1.Dock = DockStyle.Fill;
+
+				richTextBox1.Text = items.ToString();
+			}
+
+
+
 		}
 
 		private void SetDataGridBack()
 		{
 			if (resultsCache.Count > 0)
 			{
+				//Ensure UI is back to the data grid
+				richTextBox1.Visible = false;
+				richTextBox1.Dock = DockStyle.None;
+				dataGrid.Visible = true;
+				dataGrid.Dock = DockStyle.Fill;
+
 				//Get the last result
 				var result = resultsCache.Last();
 
@@ -222,6 +253,11 @@ namespace Sample_Clarity_API_App
 			{
 				return "\"" + p.ToString() + "\"";
 			}
+			else if (p is Array)
+			{
+				object[] arr = (object[])p;
+				return "new " + p.ToString() + " { " + string.Join(",", arr.Select(a => ParameterToString(a))) + " }";
+			}
 			else
 			{
 				return p.ToString();
@@ -253,5 +289,12 @@ namespace Sample_Clarity_API_App
 			SetDataGridBack();
 		}
 
+		private void recordinfo_button_Click(object sender, EventArgs e)
+		{
+			var request = new Clarity.RequestParameters.RecordInfoRequestParameters();
+			var prms = UserInputUtil.GetUserParameters(_api, null, request);
+			var item = _api.GetRecordInfo(request.datatype, request.record_id, request.attribute_info, request.pretty_attributes, request.media_info, request.coordinate_info, request.parent_info, request.child_info);
+			if (item != null) SetDataGrid(item);
+		}
 	}
 }
