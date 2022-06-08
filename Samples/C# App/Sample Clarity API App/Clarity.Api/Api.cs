@@ -8,6 +8,7 @@ using Clarity.ResponseObjects;
 using Clarity.RequestParameters;
 using Clarity.Enums;
 using Newtonsoft.Json;
+using System.Data;
 
 namespace Clarity
 {
@@ -46,7 +47,6 @@ namespace Clarity
         }
         #endregion
 
-
         #region General
 
         private string FormatQueryDate(DateTime d)
@@ -79,7 +79,12 @@ namespace Clarity
         /// <returns>An array of DataType objects</returns>
         public DataType[] GetDataTypes(Guid project)
         {
-            return ApiCaller.GetResponseJson<DataType[]>(_auth, $"/projects/{project}/datatypes");
+            var items = ApiCaller.GetResponseJson<DataType[]>(_auth, $"/projects/{project}/datatypes");
+            foreach (var item in items)
+            {
+                item.projectid = project;
+			}
+            return items;
         }
 
         /// <summary>
@@ -284,6 +289,136 @@ namespace Clarity
             return ApiCaller.GetResponseJson<WorkOrder[]>(_auth, $"/projects/{project}/workorders", query);
 		}
 
+        #endregion
+
+        #region SSES
+        /// <summary>
+        /// Gets the attribute list for a given data type.
+        /// </summary>
+        /// <param name="project">The project guid.</param>
+        /// <param name="datatype">The data type such as "StructureInspection" or "SmokeObservation".</param>
+        /// <returns>An array of DataAttribute objects.</returns>
+        public DataAttribute[] GetDataAttributes(Guid project, string datatype)
+        {
+            return ApiCaller.GetResponseJson<DataAttribute[]>(_auth, $"/projects/{project}/{datatype}/attributes");
+        }
+
+        /// <summary>
+        /// Gets the report group list for a given data type.
+        /// </summary>
+        /// <param name="project">The project guid.</param>
+        /// <param name="datatype">The data type such as "StructureInspection" or "SmokeObservation".</param>
+        /// <returns>An array of DataReportGroup objects.</returns>
+        public DataReportGroup[] GetDataReportGroups(Guid project, string datatype)
+        {
+            return ApiCaller.GetResponseJson<DataReportGroup[]>(_auth, $"/projects/{project}/{datatype}/reportgroups");
+        }
+
+        /// <summary>
+        /// Gets a record list matching the filters with any number of additional attributes.
+        /// </summary>
+        /// <param name="datatype"></param>
+        /// <param name="projectid">Optional project guid filter.</param>
+        /// <param name="created_after">Optional filter by created date.</param>
+        /// <param name="modified_after">Optional filter for modified date.</param>
+        /// <param name="attributes">Optionally request additional attributes to return with the query.</param>
+        /// <returns></returns>
+        public DataTable GetDataRecordTable(string datatype, Guid? projectid = null, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null)
+        {
+            bool hasAttributes = (attributes != null && attributes.Length > 0) ? true : false;
+
+            //Create the query
+            var query = new Dictionary<string, string>();
+            if (projectid.HasValue) query.Add("projectid", projectid.Value.ToString());
+            if (created_after.HasValue) query.Add("created_after", FormatQueryDate(created_after.Value));
+            if (modified_after.HasValue) query.Add("modified_after", FormatQueryDate(modified_after.Value));
+            if (hasAttributes) query.Add("attribute_list", string.Join(",", attributes));
+
+            //Get the items
+            var items = ApiCaller.GetResponseJson<Dictionary<string,object>[]>(_auth, $"/{datatype}/list", query);
+
+            //Generate the data table
+            var table = new DataTable();
+            table.Columns.Add(new DataColumn("id", typeof(Guid)));
+            DataColumn[] key = { table.Columns[0] };
+            table.PrimaryKey = key;
+            table.Columns.Add(new DataColumn("parent_id", typeof(Guid)));
+            table.Columns.Add(new DataColumn("project_id", typeof(Guid)));
+            table.Columns.Add(new DataColumn("name", typeof(string)));
+            table.Columns.Add(new DataColumn("created", typeof(DateTime)));
+            table.Columns.Add(new DataColumn("modified", typeof(DateTime)));
+            table.Columns.Add(new DataColumn("info_path", typeof(string)));
+
+            //Create the additional columns
+            if (hasAttributes)
+            {
+                foreach (var attribute in attributes)
+                {
+                    //Determine type
+                    Type T = typeof(string);
+                    foreach (var item in items) 
+                    {
+                        if (item.ContainsKey(attribute) && item[attribute] != null)
+                        {
+                            if (item[attribute] is int)
+                            {
+                                T = typeof(int);
+                                break;
+							}
+                            else if(item[attribute] is double)
+                            {
+                                T = typeof(double);
+                                break;
+							}
+                            else if(item[attribute] is DateTime)
+                            {
+                                T = typeof(DateTime);
+                                break;
+							}
+
+                        }
+                  
+					}
+                    table.Columns.Add(new DataColumn(attribute, T));
+                }
+			}
+
+            //Add the rows
+            foreach (var item in items)
+            {
+                var row = new List<object>();
+                row.Add(item["id"]);
+                row.Add(item["parent_id"]);
+                row.Add(item["project_id"]);
+                row.Add(item["name"]);
+                row.Add(item["created"]);
+                row.Add(item["modified"]);
+                row.Add(item["info_path"]);
+
+                if (hasAttributes)
+                {
+                    foreach (var attribute in attributes)
+                    {
+                        if (item.ContainsKey(attribute) && item[attribute] != null)
+                        {
+                            row.Add(item[attribute]);
+                        }
+                        else
+                        {
+                            row.Add(DBNull.Value);
+						}
+                    }
+                }
+
+
+                table.Rows.Add(row.ToArray());
+			}
+
+
+            return table;
+
+
+        }
         #endregion
     }
 }

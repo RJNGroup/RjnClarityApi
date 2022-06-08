@@ -87,7 +87,7 @@ namespace Sample_Clarity_API_App
 		}
 
 
-		private void SetDataGrid(object[] items)
+		private void SetDataGrid(object items)
 		{
 
 			if (dataGrid.DataSource != null)
@@ -132,24 +132,28 @@ namespace Sample_Clarity_API_App
 
 				//Set the datasource
 				dataGrid.DataSource = result;
-				ExtendDataGridWithDrillDowns((object[])result.DataSource);
+				ExtendDataGridWithDrillDowns(result.DataSource);
 			}
 		}
 
-		private void ExtendDataGridWithDrillDowns(object[] items)
+		private void ExtendDataGridWithDrillDowns(object items)
 		{
-			if (items?.Length > 0)
+			if (items is Array)
 			{
-				//Get the methods on the class
-				var methods = items.First().GetType().GetMethods().Where(m => !m.IsSpecialName && !m.IsVirtual && m.Name != "GetType");
-				foreach (var method in methods)
+				var arr = ((object[])items);
+				if (arr?.Length > 0)
 				{
-					//Add a button column for each method
-					var button = new DataGridViewButtonColumn();
-					button.HeaderText = method.Name.Replace("Get", "");
-					button.Name = method.Name;
-					dataGrid.Columns.Add(button);
-				}			
+					//Get the methods on the class
+					var methods = arr.First().GetType().GetMethods().Where(m => !m.IsSpecialName && !m.IsVirtual && m.Name != "GetType");
+					foreach (var method in methods)
+					{
+						//Add a button column for each method
+						var button = new DataGridViewButtonColumn();
+						button.HeaderText = method.Name.Replace("Get", "");
+						button.Name = method.Name;
+						dataGrid.Columns.Add(button);
+					}
+				}
 			}
 		}
 
@@ -187,7 +191,7 @@ namespace Sample_Clarity_API_App
 					OutputFunction($"var {method.ReturnType.Name.Replace("[]", "")}Results = {itemClassName}{e.RowIndex}.{methodName}({string.Join(",", prms.Select(p => ParameterToString(p)))});");
 
 					//Call the method and get the results
-					object[] results = (object[])method.Invoke(item, prms);
+					var results = method.Invoke(item, prms);
 
 					//Put the new results on the data grid
 					if (results != null) SetDataGrid(results);

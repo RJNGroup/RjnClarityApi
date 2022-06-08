@@ -55,10 +55,14 @@
     <Compile Include="Enums\WorkOrderStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestParameters\DataImportBody.cs" />
+    <Compile Include="RequestParameters\DataRecordRequestParameters.cs" />
     <Compile Include="RequestParameters\IRequestParameters.cs" />
     <Compile Include="RequestParameters\MonitorAlarmRequestParameters.cs" />
     <Compile Include="RequestParameters\MonitorDataRequestParameters.cs" />
     <Compile Include="RequestParameters\WorkOrderRequestParameters.cs" />
+    <Compile Include="ResponseObjects\DataAttribute.cs" />
+    <Compile Include="ResponseObjects\IDataListObject.cs" />
+    <Compile Include="ResponseObjects\DataReportGroup.cs" />
     <Compile Include="ResponseObjects\DataType.cs" />
     <Compile Include="ResponseObjects\MonitorAlarm.cs" />
     <Compile Include="ResponseObjects\MonitorBattery.cs" />

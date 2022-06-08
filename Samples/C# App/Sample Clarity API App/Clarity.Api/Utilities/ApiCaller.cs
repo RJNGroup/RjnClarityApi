@@ -31,22 +31,23 @@ namespace Clarity.Utilities
 			auth.api.RaiseClarityHttpCallEvent("GET " + uri);
 
 			//Call the api
-			using (System.Net.WebResponse response = request.GetResponse())
+			string responseJson = "";
+			try
 			{
-				var reader = new StreamReader(response.GetResponseStream());
-				var responseJson = reader.ReadToEnd();
-				try
+				using (System.Net.WebResponse response = request.GetResponse())
 				{
+					var reader = new StreamReader(response.GetResponseStream());
+					responseJson = reader.ReadToEnd();
 					return JsonConvert.DeserializeObject<T>(responseJson);
 				}
-				catch (Exception e)
-				{
-					//Raise an error
-					auth.api.RaiseClarityHttpCallErrorEvent(e, responseJson);
-					return default(T);
-				}
-
 			}
+			catch (Exception e)
+			{
+				//Raise an error
+				auth.api.RaiseClarityHttpCallErrorEvent(e, responseJson);
+				return default(T);
+			}
+
 		}
 
 
