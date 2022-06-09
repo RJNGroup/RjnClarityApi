@@ -13,6 +13,57 @@ In order to start using the API, you must be granted access as follows:
 
 The sections below describe how to use the various resources at your disposal.
 
+
+## Documentation in Swagger
+
+To explore the API in Swagger:
+
+1. Navigate to the [Swagger](https://app.swaggerhub.com/apis/rjnclarity/RjnClarityRestApi/1.0.0) documentation.
+2. Run the "POST /auth" route in the General category. Make sure to edit the body of the request, substituting your "client_id" and "password".
+3. Copy the "token" value in the response.
+4. Click the green "Authorize" button and paste the token in the "Value" field. Then click "Authorize".
+5. Now you are ready to test any of the other urls.
+
+## Run in Postman
+
+To run in Postman:
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883?action=collection%2Ffork&collection-url=entityId%3D1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883%26entityType%3Dcollection%26workspaceId%3D68042aba-edc1-489a-82d0-700eeb2f4097#?env%5BClarityAPI%20Public%5D=W3sia2V5IjoiY2xpZW50X2lkIiwidmFsdWUiOiJbZW50ZXIgY2xpZW50X2lkIHByb3ZpZGVkXSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJjbGllbnRfcGFzc3dvcmQiLCJ2YWx1ZSI6IltlbnRlciBwYXNzd29yZCBwcm92aWRlZF0iLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9LHsia2V5IjoidG9rZW4iLCJ2YWx1ZSI6IltlbnRlciB0b2tlbiByZXR1cm5lZCBpbiB0aGUgXCJ0b2tlblwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6InByb2plY3RpZCIsInZhbHVlIjoiW2VudGVyIGEgcHJvamVjdCB1dWlkIGZyb20gdGhlIFwicHJvamVjdFwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6Im1hbmhvbGVfaWQiLCJ2YWx1ZSI6IltlbnRlciBhIG1hbmhvbGUgdXVpZCBmcm9tIHRoZSBcImluc3BlY3Rpb24gbGlzdCAoU3RydWN0dXJlSW5zcGVjdGlvbilcIiByZXF1ZXN0XSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJiYXNlX3VybCIsInZhbHVlIjoiaHR0cHM6Ly9yam4tY2xhcml0eS1hcGkuY29tL3YxL2NsYXJpdHkiLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9XQ==)
+
+1. Follow the [link](https://app.getpostman.com/run-collection/1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883?action=collection%2Ffork&collection-url=entityId%3D1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883%26entityType%3Dcollection%26workspaceId%3D68042aba-edc1-489a-82d0-700eeb2f4097#?env%5BClarityAPI%20Public%5D=W3sia2V5IjoiY2xpZW50X2lkIiwidmFsdWUiOiJbZW50ZXIgY2xpZW50X2lkIHByb3ZpZGVkXSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJjbGllbnRfcGFzc3dvcmQiLCJ2YWx1ZSI6IltlbnRlciBwYXNzd29yZCBwcm92aWRlZF0iLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9LHsia2V5IjoidG9rZW4iLCJ2YWx1ZSI6IltlbnRlciB0b2tlbiByZXR1cm5lZCBpbiB0aGUgXCJ0b2tlblwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6InByb2plY3RpZCIsInZhbHVlIjoiW2VudGVyIGEgcHJvamVjdCB1dWlkIGZyb20gdGhlIFwicHJvamVjdFwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6Im1hbmhvbGVfaWQiLCJ2YWx1ZSI6IltlbnRlciBhIG1hbmhvbGUgdXVpZCBmcm9tIHRoZSBcImluc3BlY3Rpb24gbGlzdCAoU3RydWN0dXJlSW5zcGVjdGlvbilcIiByZXF1ZXN0XSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJiYXNlX3VybCIsInZhbHVlIjoiaHR0cHM6Ly9yam4tY2xhcml0eS1hcGkuY29tL3YxL2NsYXJpdHkiLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9XQ==) and fork the Postman setup.
+2. Go to the Environments tab and enter in the "client_id" and "client_password" environment variables.
+3. Go to the Collections tab and run the "token" request. Copy the "token" value from the body of the response.
+4. Return to the Environments tab and past the token into the "token" variable.
+5. Return to the Collections tab and run the "projects" request. Select a project_id from one of the projects in the list and copy it.
+6. In the Environments tab, paste the project id into the "project_id" variable.
+7. In the Collections tab, run the "recordtypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {datatype} path parameter (see the Swagger documentation) to get data of various types.
+
+## Easy Integration into .NET
+
+The "Integration .NET" folder contains an assembly that can be easily referenced into a .NET project. This allows implementation of the API with easy to use, high-level functions.
+
+```vb.net
+Dim api = new Clarity.Api("[Your client_id]", "[Your password]")
+Dim projects = api.GetProjects()
+
+```
+
+```C#
+var api = new Clarity.Api("[Your client_id]", "[Your password]");
+var projects = api.GetProjects();
+```
+
+## Sample Projects
+
+### ArcGIS JS Web Map - Smoke Observation
+A single page map and data table that demonstrate how to use the geojeson path to show smoke observations. It includes examples of how to configure additional attributes to the features and pull photos for the popup templates.
+
+### ArcGIS JS Web Map - Manhole Surface Type
+Similar to the smoke observations map, it is a single page map and data table that demonstrate how to use the geojeson path to show manhole inspections. It includes examples of how to configure additional attributes to the features and pull photos for the popup templates.
+
+### C#.NET Data Explorer (Sample Clarity API App)
+Run the sample app, enter your credentials, and then click any of the buttons on the side or in the results tables to explore the data. As you pull data and drill down, you will see a mockup of the function calls and a list of http URIs to help you understand how to implement the API.
+
 ## Basic Concepts
 
 ### Authentication
@@ -43,37 +94,5 @@ To use the attribute_list extension feature, one must know what attributes are a
 ### GeoJSON
 The GeoJSON path (/clarity/{datatype}/geojson) facilitates easy integration with the ArcGIS JavaScript API or any other mapping application that accepts the standard GeoJson format. See the samples directory in this repository for some simple implementations to get you started.
 
-## Documentation in Swagger
-
-To explore the API in Swagger:
-
-1. Navigate to the [Swagger](https://app.swaggerhub.com/apis/rjnclarity/RjnClarityRestApi/1.0.0) documentation.
-2. Run the "POST /auth" route in the General category. Make sure to edit the body of the request, substituting your "client_id" and "password".
-3. Copy the "token" value in the response.
-4. Click the green "Authorize" button and paste the token in the "Value" field. Then click "Authorize".
-5. Now you are ready to test any of the other urls.
-
-## Run in Postman
-
-To run in Postman:
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883?action=collection%2Ffork&collection-url=entityId%3D1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883%26entityType%3Dcollection%26workspaceId%3D68042aba-edc1-489a-82d0-700eeb2f4097#?env%5BClarityAPI%20Public%5D=W3sia2V5IjoiY2xpZW50X2lkIiwidmFsdWUiOiJbZW50ZXIgY2xpZW50X2lkIHByb3ZpZGVkXSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJjbGllbnRfcGFzc3dvcmQiLCJ2YWx1ZSI6IltlbnRlciBwYXNzd29yZCBwcm92aWRlZF0iLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9LHsia2V5IjoidG9rZW4iLCJ2YWx1ZSI6IltlbnRlciB0b2tlbiByZXR1cm5lZCBpbiB0aGUgXCJ0b2tlblwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6InByb2plY3RpZCIsInZhbHVlIjoiW2VudGVyIGEgcHJvamVjdCB1dWlkIGZyb20gdGhlIFwicHJvamVjdFwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6Im1hbmhvbGVfaWQiLCJ2YWx1ZSI6IltlbnRlciBhIG1hbmhvbGUgdXVpZCBmcm9tIHRoZSBcImluc3BlY3Rpb24gbGlzdCAoU3RydWN0dXJlSW5zcGVjdGlvbilcIiByZXF1ZXN0XSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJiYXNlX3VybCIsInZhbHVlIjoiaHR0cHM6Ly9yam4tY2xhcml0eS1hcGkuY29tL3YxL2NsYXJpdHkiLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9XQ==)
-
-1. Follow the [link](https://app.getpostman.com/run-collection/1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883?action=collection%2Ffork&collection-url=entityId%3D1419781-cfc2a7ac-8b84-4249-81a2-db60ee55c883%26entityType%3Dcollection%26workspaceId%3D68042aba-edc1-489a-82d0-700eeb2f4097#?env%5BClarityAPI%20Public%5D=W3sia2V5IjoiY2xpZW50X2lkIiwidmFsdWUiOiJbZW50ZXIgY2xpZW50X2lkIHByb3ZpZGVkXSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJjbGllbnRfcGFzc3dvcmQiLCJ2YWx1ZSI6IltlbnRlciBwYXNzd29yZCBwcm92aWRlZF0iLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9LHsia2V5IjoidG9rZW4iLCJ2YWx1ZSI6IltlbnRlciB0b2tlbiByZXR1cm5lZCBpbiB0aGUgXCJ0b2tlblwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6InByb2plY3RpZCIsInZhbHVlIjoiW2VudGVyIGEgcHJvamVjdCB1dWlkIGZyb20gdGhlIFwicHJvamVjdFwiIHJlcXVlc3RdIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQifSx7ImtleSI6Im1hbmhvbGVfaWQiLCJ2YWx1ZSI6IltlbnRlciBhIG1hbmhvbGUgdXVpZCBmcm9tIHRoZSBcImluc3BlY3Rpb24gbGlzdCAoU3RydWN0dXJlSW5zcGVjdGlvbilcIiByZXF1ZXN0XSIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0In0seyJrZXkiOiJiYXNlX3VybCIsInZhbHVlIjoiaHR0cHM6Ly9yam4tY2xhcml0eS1hcGkuY29tL3YxL2NsYXJpdHkiLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiZGVmYXVsdCJ9XQ==) and fork the Postman setup.
-2. Go to the Environments tab and enter in the "client_id" and "client_password" environment variables.
-3. Go to the Collections tab and run the "token" request. Copy the "token" value from the body of the response.
-4. Return to the Environments tab and past the token into the "token" variable.
-5. Return to the Collections tab and run the "projects" request. Select a project_id from one of the projects in the list and copy it.
-6. In the Environments tab, paste the project id into the "project_id" variable.
-7. In the Collections tab, run the "recordtypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {datatype} path parameter (see the Swagger documentation) to get data of various types.
-
-
-## Sample Projects
-
-### ArcGIS JS Web Map - Smoke Observation
-A single page map and data table that demonstrate how to use the geojeson path to show smoke observations. It includes examples of how to configure additional attributes to the features and pull photos for the popup templates.
-
-### ArcGIS JS Web Map - Manhole Surface Type
-Similar to the smoke observations map, it is a single page map and data table that demonstrate how to use the geojeson path to show manhole inspections. It includes examples of how to configure additional attributes to the features and pull photos for the popup templates.
 
 
