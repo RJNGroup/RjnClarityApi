@@ -80,6 +80,32 @@ namespace Clarity.ResponseObjects
 		/// </summary>
 		public WorkOrderRequestParameters GetWorkOrdersRequestParameters = new WorkOrderRequestParameters();
 
+		/// <summary>
+		/// Gets the storm events that occured on the project.
+		/// </summary>
+		/// <param name="occur_after">Filter for storms that occured after this date.</param>
+		/// <param name="occur_before">Filter for storms that occured before this date.</param>
+		/// <returns></returns>
+		public RdiiStorm[] GetStormEvents(Api api, DateTime? occur_after = null, DateTime? occur_before = null) => api.GetStormEvents(id, occur_after, occur_before);
+		
+		/// <summary>
+		/// For internal use.
+		/// </summary>
+		public RdiiStormsRequestParameters GetStormEventsRequestParameters = new RdiiStormsRequestParameters();
+
+		/// <summary>
+		/// Gets rain takeoffs for a particular duration, looking back the specified number of days.
+		/// </summary>
+		/// <param name="duration">The rain intensity duration in minutes.</param>
+		/// <param name="timeframe">The number of days to look back and query storm events.</param>
+		/// <returns></returns>
+		public RdiiRainTakeoff[] GetRainTakeoffs(Api api, int duration, int timeframe) => api.GetRainTakeoffsForDurationAndTimeframe(id, duration, timeframe);
+
+		/// <summary>
+		/// For internal use.
+		/// </summary>
+		public RainTakeoffsByDurationTimeframeRequestParameters GetRainTakeoffsRequestParameters = new RainTakeoffsByDurationTimeframeRequestParameters();
+
 		public override string ToString()
 		{
 			return projectnumber + ": " + description;

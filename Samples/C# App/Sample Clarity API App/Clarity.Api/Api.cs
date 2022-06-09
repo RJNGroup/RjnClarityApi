@@ -397,5 +397,50 @@ namespace Clarity
         }
 
         #endregion
+
+        #region "RDII"
+
+        /// <summary>
+        /// Gets the storm events that occured on the project.
+        /// </summary>
+        /// <param name="projectid">The project guid.</param>
+        /// <param name="occur_after">Filter for storms that occured after this date.</param>
+        /// <param name="occur_before">Filter for storms that occured before this date.</param>
+        /// <returns></returns>
+        public RdiiStorm[] GetStormEvents(Guid projectid, DateTime? occur_after = null, DateTime? occur_before = null)
+        {
+
+            //Create the query
+            var query = new Dictionary<string, string>();
+            if (occur_after.HasValue) query.Add("occur_after", FormatQueryDate(occur_after.Value));
+            if (occur_before.HasValue) query.Add("occur_before", FormatQueryDate(occur_before.Value));
+
+            //Get the items
+            return ApiCaller.GetResponseJson<RdiiStorm[]>(_auth, $"/projects/{projectid}/storms", query);
+
+        }
+
+        /// <summary>
+        /// Gets the rain takeoffs for the storm event.
+        /// </summary>
+        /// <param name="stormid"></param>
+        /// <returns>Returns an array of RdiiRainTakeoff objects.</returns>
+        public RdiiRainTakeoff[] GetRainTakeoffs(Guid stormid)
+        {
+            return ApiCaller.GetResponseJson<RdiiRainTakeoff[]>(_auth, $"/storms/{stormid}/takeoffs");
+        }
+
+        /// <summary>
+        /// Gets rain takeoffs for a particular duration, looking back the specified number of days.
+        /// </summary>
+        /// <param name="projectid">The project guid.</param>
+        /// <param name="duration">The rain intensity duration in minutes.</param>
+        /// <param name="timeframe">The number of days to look back and query storm events.</param>
+        /// <returns></returns>
+        public RdiiRainTakeoff[] GetRainTakeoffsForDurationAndTimeframe(Guid projectid, int duration, int timeframe)
+        {
+            return ApiCaller.GetResponseJson<RdiiRainTakeoff[]>(_auth, $"/projects/{projectid}/storms/{duration}/takeoffs/{timeframe}");
+        }
+        #endregion
     }
 }

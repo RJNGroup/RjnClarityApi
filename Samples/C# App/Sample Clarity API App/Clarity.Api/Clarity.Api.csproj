@@ -60,11 +60,15 @@
     <Compile Include="RequestParameters\IRequestParameters.cs" />
     <Compile Include="RequestParameters\MonitorAlarmRequestParameters.cs" />
     <Compile Include="RequestParameters\MonitorDataRequestParameters.cs" />
+    <Compile Include="RequestParameters\RainTakeoffsByDurationTimeframeRequestParameters.cs" />
+    <Compile Include="RequestParameters\RdiiStormsRequestParameters.cs" />
     <Compile Include="RequestParameters\RecordInfoRequestParameters.cs" />
     <Compile Include="RequestParameters\WorkOrderRequestParameters.cs" />
     <Compile Include="ResponseObjects\DataAttribute.cs" />
     <Compile Include="ResponseObjects\DataRecordInfo.cs" />
     <Compile Include="ResponseObjects\DataReportGroup.cs" />
+    <Compile Include="ResponseObjects\RdiiRainTakeoff.cs" />
+    <Compile Include="ResponseObjects\RdiiStorm.cs" />
     <Compile Include="ResponseObjects\RecordType.cs" />
     <Compile Include="ResponseObjects\MonitorAlarm.cs" />
     <Compile Include="ResponseObjects\MonitorBattery.cs" />
