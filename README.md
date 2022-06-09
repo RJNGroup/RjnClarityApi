@@ -22,14 +22,14 @@ Tokens may be submitted in two ways:
 1. An Authorization: Bearer [token] header.
 2. A token query parameter (i.e. ?token=[token]).
 
-### Data Types
-Data Types, in this context, represent a single unit of data. In other words, it is a type of data record. Most inspection types must utilize two or more Data Types to facilitate one-to-many relationships. 
+### Record Types
+Record Types represent a single unit of data. Most inspection types must utilize two or more Record Types to facilitate one-to-many relationships. 
 
-So, for example, a standard MACP Manhole Inspection has the StructureInspection, StructurePipeInspection, and StructureDefects Data Types, which correspond to the inspections, connections, and conditions data tables in the MACP database.
+So, for example, a standard MACP Manhole Inspection has the StructureInspection, StructurePipeInspection, and StructureDefects Record Types, which correspond to the inspections, connections, and conditions data tables in the MACP database.
 
-Clarity's Data Types are dynamic. That means that every project will automatically contain every data type that is in use. It also means that the API is future proof. New inspection types can be registered by RJN as new services are offered and will seemlessly become available without having to update the API version or schema.
+Clarity's Record Types are dynamic. That means that every project will automatically contain every record type that is in use. It also means that the API is future proof. New inspection types can be registered by RJN as new services are offered and will seemlessly become available without having to update the API version or schema.
 
-To use the API affectively, one needs to know the Data Type names available on a given project. Those can be accessed using the /clarity/projects/{projectid}/datatypes path.
+To use the API affectively, one needs to know the Record Type names available on a given project. Those can be accessed using the /clarity/projects/{projectid}/recordtypes path.
 
 ### Attributes
 Attributes are the details of a "Data Type" (see above) or a record. Each question on a field form is filling out a single Attribute. They are essentially key / value pairs.
@@ -65,7 +65,7 @@ To run in Postman:
 4. Return to the Environments tab and past the token into the "token" variable.
 5. Return to the Collections tab and run the "projects" request. Select a project_id from one of the projects in the list and copy it.
 6. In the Environments tab, paste the project id into the "project_id" variable.
-7. In the Collections tab, run the "datatypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {datatype} path parameter (see the Swagger documentation) to get data of various types.
+7. In the Collections tab, run the "recordtypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {datatype} path parameter (see the Swagger documentation) to get data of various types.
 
 
 ## Sample Projects
