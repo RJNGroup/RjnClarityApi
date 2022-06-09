@@ -1,6 +1,14 @@
 # RjnClarityApi
  Sample applications and resources to get you started with the RJN Clarity API.
 
+## Table of Contents  
+[Getting Started](#getting-started)  <br>
+[Documentation in Swagger](#documentation-in-swagger)  <br>
+[Run in Postman](#run-in-postman)  <br>
+[Easy NET Integration](#easy-net-integration)<br>
+[Sample Projects](#sample-projects)<br>
+[Basic Concepts](#basic-concepts)
+
 ## Getting Started
 
 There are several ways to get started using the RJN Clarity API. This repository contains a variety of resources that document, demonstrate, and allow you to explore the API and determine how to integrate it into your work flow.
