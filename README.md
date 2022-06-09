@@ -36,7 +36,7 @@ To run in Postman:
 4. Return to the Environments tab and past the token into the "token" variable.
 5. Return to the Collections tab and run the "projects" request. Select a project_id from one of the projects in the list and copy it.
 6. In the Environments tab, paste the project id into the "project_id" variable.
-7. In the Collections tab, run the "recordtypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {datatype} path parameter (see the Swagger documentation) to get data of various types.
+7. In the Collections tab, run the "recordtypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {record_type} path parameter (see the Swagger documentation) to get data of various types.
 
 ## Easy .NET Integration 
 
