@@ -1,0 +1,16 @@
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\bin\Release\Sample Clarity API App.exe.config
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\bin\Release\Sample Clarity API App.exe
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\bin\Release\Sample Clarity API App.pdb
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\bin\Release\Clarity.Api.dll
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\bin\Release\Newtonsoft.Json.dll
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\bin\Release\Clarity.Api.pdb
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\bin\Release\Newtonsoft.Json.xml
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample Clarity API App.csproj.AssemblyReference.cache
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample_Clarity_API_App.Main.resources
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample_Clarity_API_App.Properties.Resources.resources
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample_Clarity_API_App.UserInput.ParametersDialog.resources
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample Clarity API App.csproj.GenerateResource.cache
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample Clarity API App.csproj.CoreCompileInputs.cache
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample Clarity API App.csproj.CopyComplete
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample Clarity API App.exe
+C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Sample Clarity API App\obj\Release\Sample Clarity API App.pdb
