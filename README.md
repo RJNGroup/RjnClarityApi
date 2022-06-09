@@ -38,7 +38,7 @@ To run in Postman:
 6. In the Environments tab, paste the project id into the "project_id" variable.
 7. In the Collections tab, run the "recordtypes" request. These represent units of data collection and storage such as "StructureInspection" (Manhole inspections), "StructurePipeInspection" (Pipes connected to the inspected manholes), "SmokeObservation" (Smoke observations and defects), "FlowMonitor" (Flow meter site information), and much more. Substitute those into the {datatype} path parameter (see the Swagger documentation) to get data of various types.
 
-## Easy Integration into .NET
+## Easy .NET Integration 
 
 The "Integration .NET" folder contains an assembly that can be easily referenced into a .NET project. This allows implementation of the API with easy to use, high-level functions.
 
