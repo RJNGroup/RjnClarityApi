@@ -9,10 +9,10 @@ using System.Data;
 
 namespace Clarity.ResponseObjects
 {
-	public class DataType
+	public class RecordType
 	{
 		public string inspection_type { get; set; }
-		public string data_type { get; set; }
+		public string record_type { get; set; }
 		public string name { get; set; }
 		public int? record_count { get; set; }
 		public string list_path { get; set; }
@@ -22,20 +22,20 @@ namespace Clarity.ResponseObjects
 
 		public override string ToString() 
 		{
-			return data_type;
+			return record_type;
 		}
 
 		/// <summary>
 		/// Gets the attribute list for a given data type.
 		/// </summary>
 		/// <returns>An array of DataAttribute objects.</returns>
-		public DataAttribute[] GetDataAttributes(Api api) => api.GetDataAttributes(projectid, data_type);
+		public DataAttribute[] GetDataAttributes(Api api) => api.GetDataAttributes(projectid, record_type);
 
 		/// <summary>
 		/// Gets the report group list for a given data type.
 		/// </summary>
 		/// <returns>An array of DataReportGroup objects.</returns>
-		public DataReportGroup[] GetDataReportGroups(Api api) => api.GetDataReportGroups(projectid, data_type);
+		public DataReportGroup[] GetDataReportGroups(Api api) => api.GetDataReportGroups(projectid, record_type);
 
 		/// <summary>
 		/// Gets a record list matching the filters with any number of additional attributes.
@@ -44,7 +44,7 @@ namespace Clarity.ResponseObjects
 		/// <param name="modified_after">Optional filter for modified date.</param>
 		/// <param name="attributes">Optionally request additional attributes to return with the query.</param>
 		/// <returns></returns>
-		public DataTable GetDataRecordTable(Api api, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null) => api.GetDataRecordTable(data_type, projectid, created_after, modified_after, attributes);
+		public DataTable GetDataRecordTable(Api api, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null) => api.GetDataRecordTable(record_type, projectid, created_after, modified_after, attributes);
 
 		/// <summary>
 		/// For internal use.
@@ -58,7 +58,7 @@ namespace Clarity.ResponseObjects
 		/// <param name="modified_after">Optional filter for modified date.</param>
 		/// <param name="attributes">Optionally request additional attributes to return with the query.</param>
 		/// <returns>Returns a JSON string in the GeoJSON format.</returns>
-		public string GetGeoJson(Api api, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null) => api.GetGeoJson(data_type, projectid, created_after, modified_after, attributes);
+		public string GetGeoJson(Api api, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null) => api.GetGeoJson(record_type, projectid, created_after, modified_after, attributes);
 		
 		/// <summary>
 		/// For internal use.

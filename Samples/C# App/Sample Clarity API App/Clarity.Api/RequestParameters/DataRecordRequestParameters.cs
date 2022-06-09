@@ -12,7 +12,7 @@ namespace Clarity.RequestParameters
 	public class DataRecordRequestParameters : IRequestParameters
 	{
 		[Browsable(false)]
-		public string data_type { get; set; }
+		public string record_type { get; set; }
 
 		[Browsable(false)]
 		public Guid project { get; set; }
@@ -30,14 +30,14 @@ namespace Clarity.RequestParameters
 		public object[] ToParamArray(Api api, object Parent)
 		{
 			object[] result;
-			if (Parent != null && Parent is DataType)
+			if (Parent != null && Parent is RecordType)
 			{
 				object[] r = { api, created_after, modified_after, attributes };
 				result = r;
 			}
 			else
 			{
-				object[] r = { api, data_type, project, created_after, modified_after, attributes };
+				object[] r = { api, record_type, project, created_after, modified_after, attributes };
 				result = r;
 			}
 

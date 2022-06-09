@@ -15,13 +15,13 @@ namespace Clarity.ResponseObjects
 		public string projectnumber { get; set; }
 
 		/// <summary>
-		/// Gets the datatypes for this project.
+		/// Gets the recordtypes for this project.
 		/// </summary>
 		/// <param name="api"></param>
 		/// <returns></returns>
-		public DataType[] GetDataTypes(Api api, bool include_counts = false) => api.GetDataTypes(id, include_counts);
+		public RecordType[] GetRecordTypes(Api api, bool include_counts = false) => api.GetRecordTypes(id, include_counts);
 
-		public DataTypesRequestParameters GetDataTypesRequestParameters = new DataTypesRequestParameters();
+		public RecordTypesRequestParameters GetRecordTypesRequestParameters = new RecordTypesRequestParameters();
 
 		/// <summary>
 		/// Gets an array of flow meter sites.

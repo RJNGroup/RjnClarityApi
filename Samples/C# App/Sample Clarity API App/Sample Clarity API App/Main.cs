@@ -295,9 +295,9 @@ namespace Sample_Clarity_API_App
 
 		private void recordinfo_button_Click(object sender, EventArgs e)
 		{
-			var request = new Clarity.RequestParameters.RecordInfoRequestParameters();
+			var request = new RecordInfoRequestParameters();
 			var prms = UserInputUtil.GetUserParameters(_api, null, request);
-			var item = _api.GetRecordInfo(request.datatype, request.record_id, request.attribute_info, request.pretty_attributes, request.media_info, request.coordinate_info, request.parent_info, request.child_info);
+			var item = _api.GetRecordInfo(request.recordtype, request.record_id, request.attribute_info, request.pretty_attributes, request.media_info, request.coordinate_info, request.parent_info, request.child_info);
 			if (item != null) SetDataGrid(item);
 		}
 	}

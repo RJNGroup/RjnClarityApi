@@ -77,12 +77,12 @@ namespace Clarity
         /// </summary>
         /// <param name="project">The project guid.</param>
         /// <param name="include_counts">Setting this to true REALLY slows down the query, so only do it if you must.</param>
-        /// <returns>An array of DataType objects</returns>
-        public DataType[] GetDataTypes(Guid project, bool include_counts = false)
+        /// <returns>An array of RecordType objects</returns>
+        public RecordType[] GetRecordTypes(Guid project, bool include_counts = false)
         {
             var query = new Dictionary<string, string>();
             query.Add("include_counts", include_counts.ToString().ToLower());
-            var items = ApiCaller.GetResponseJson<DataType[]>(_auth, $"/projects/{project}/datatypes", query);
+            var items = ApiCaller.GetResponseJson<RecordType[]>(_auth, $"/projects/{project}/recordtypes", query);
             foreach (var item in items)
             {
                 item.projectid = project;
@@ -299,34 +299,34 @@ namespace Clarity
         /// Gets the attribute list for a given data type.
         /// </summary>
         /// <param name="project">The project guid.</param>
-        /// <param name="datatype">The data type such as "StructureInspection" or "SmokeObservation".</param>
+        /// <param name="recordtype">The data type such as "StructureInspection" or "SmokeObservation".</param>
         /// <returns>An array of DataAttribute objects.</returns>
-        public DataAttribute[] GetDataAttributes(Guid project, string datatype)
+        public DataAttribute[] GetDataAttributes(Guid project, string recordtype)
         {
-            return ApiCaller.GetResponseJson<DataAttribute[]>(_auth, $"/projects/{project}/{datatype}/attributes");
+            return ApiCaller.GetResponseJson<DataAttribute[]>(_auth, $"/projects/{project}/{recordtype}/attributes");
         }
 
         /// <summary>
         /// Gets the report group list for a given data type.
         /// </summary>
         /// <param name="project">The project guid.</param>
-        /// <param name="datatype">The data type such as "StructureInspection" or "SmokeObservation".</param>
+        /// <param name="recordtype">The data type such as "StructureInspection" or "SmokeObservation".</param>
         /// <returns>An array of DataReportGroup objects.</returns>
-        public DataReportGroup[] GetDataReportGroups(Guid project, string datatype)
+        public DataReportGroup[] GetDataReportGroups(Guid project, string recordtype)
         {
-            return ApiCaller.GetResponseJson<DataReportGroup[]>(_auth, $"/projects/{project}/{datatype}/reportgroups");
+            return ApiCaller.GetResponseJson<DataReportGroup[]>(_auth, $"/projects/{project}/{recordtype}/reportgroups");
         }
 
         /// <summary>
         /// Gets a record list matching the filters with any number of additional attributes.
         /// </summary>
-        /// <param name="datatype"></param>
+        /// <param name="recordtype"></param>
         /// <param name="projectid">Optional project guid filter.</param>
         /// <param name="created_after">Optional filter by created date.</param>
         /// <param name="modified_after">Optional filter for modified date.</param>
         /// <param name="attributes">Optionally request additional attributes to return with the query.</param>
         /// <returns>A data table with the records including the additional attribute columns.</returns>
-        public DataTable GetDataRecordTable(string datatype, Guid? projectid = null, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null)
+        public DataTable GetDataRecordTable(string recordtype, Guid? projectid = null, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null)
         {
        
             //Create the query
@@ -337,7 +337,7 @@ namespace Clarity
             if (attributes != null && attributes.Length > 0) query.Add("attribute_list", string.Join(",", attributes));
 
             //Get the items
-            var items = ApiCaller.GetResponseJson<Dictionary<string,object>[]>(_auth, $"/{datatype}/list", query);
+            var items = ApiCaller.GetResponseJson<Dictionary<string,object>[]>(_auth, $"/{recordtype}/list", query);
 
             //Convert to data table
             return Data.DataRecordsToDataTable(items, attributes);
@@ -348,13 +348,13 @@ namespace Clarity
         /// <summary>
         /// Gets all filtered data in the GeoJSON format.
         /// </summary>
-        /// <param name="datatype"></param>
+        /// <param name="recordtype"></param>
         /// <param name="projectid">Optional project guid filter.</param>
         /// <param name="created_after">Optional filter by created date.</param>
         /// <param name="modified_after">Optional filter for modified date.</param>
         /// <param name="attributes">Optionally request additional attributes to return with the query.</param>
         /// <returns>Returns a JSON string in the GeoJSON format.</returns>
-        public string GetGeoJson(string datatype, Guid? projectid = null, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null)
+        public string GetGeoJson(string recordtype, Guid? projectid = null, DateTime? created_after = null, DateTime? modified_after = null, string[] attributes = null)
         {
 
             //Create the query
@@ -365,14 +365,14 @@ namespace Clarity
             if (attributes != null && attributes.Length > 0) query.Add("attribute_list", string.Join(",", attributes));
 
             //Get the json
-            return ApiCaller.GetResponseJsonRaw(_auth, $"/{datatype}/geojson", query);
+            return ApiCaller.GetResponseJsonRaw(_auth, $"/{recordtype}/geojson", query);
 
         }
 
         /// <summary>
         /// Gets all related info for a data record.
         /// </summary>
-        /// <param name="datatype">The data type, such as "SmokeObservation" or "StructureInspection"</param>
+        /// <param name="recordtype">The data type, such as "SmokeObservation" or "StructureInspection"</param>
         /// <param name="record_id">The record guid.</param>
         /// <param name="attribute_info">Return all attributes.</param>
         /// <param name="pretty_attributes">Use the human-friendly labels for the attributes rather than the name identifiers.</param>
@@ -381,7 +381,7 @@ namespace Clarity
         /// <param name="parent_info">Return related parent record if exists.</param>
         /// <param name="child_info">Return related child records (if they exist). This will recursively get all children and grandchildren.</param>
         /// <returns>Returns a DataRecordInfo object.</returns>
-        public DataRecordInfo GetRecordInfo(string datatype, Guid record_id, bool attribute_info = true, bool pretty_attributes = false, bool media_info = true, bool coordinate_info = true, bool parent_info = false, bool child_info = false)
+        public DataRecordInfo GetRecordInfo(string recordtype, Guid record_id, bool attribute_info = true, bool pretty_attributes = false, bool media_info = true, bool coordinate_info = true, bool parent_info = false, bool child_info = false)
         {
             //Create the query
             var query = new Dictionary<string, string>();
@@ -393,7 +393,7 @@ namespace Clarity
             query.Add("child_info", child_info.ToString().ToLower());
 
             //Get the item
-            return ApiCaller.GetResponseJson<DataRecordInfo>(_auth, $"/{datatype}/{record_id}/info", query);
+            return ApiCaller.GetResponseJson<DataRecordInfo>(_auth, $"/{recordtype}/{record_id}/info", query);
         }
 
         #endregion

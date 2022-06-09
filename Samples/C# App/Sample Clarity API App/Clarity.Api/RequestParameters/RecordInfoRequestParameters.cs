@@ -11,8 +11,8 @@ namespace Clarity.RequestParameters
 {
 	public class RecordInfoRequestParameters : IRequestParameters
 	{
-		[Browsable(true), Category("Required Identifier"), Description("REQUIRED: The data type name such as SmokeObservation or StructureInspection.")]
-		public string datatype { get; set; }
+		[Browsable(true), Category("Required Identifier"), Description("REQUIRED: The record type name such as SmokeObservation or StructureInspection.")]
+		public string recordtype { get; set; }
 
 		[Browsable(true), Category("Required Identifier"), Description("REQUIRED: The guid id of the record.")]
 		public Guid record_id { get; set; }
@@ -39,7 +39,7 @@ namespace Clarity.RequestParameters
 
 		public object[] ToParamArray(Api api, object Parent)
 		{
-			return new object[] { datatype, record_id, attribute_info, pretty_attributes, media_info, coordinate_info, parent_info, child_info }; ;
+			return new object[] { recordtype, record_id, attribute_info, pretty_attributes, media_info, coordinate_info, parent_info, child_info }; ;
 		}
 	}
 }

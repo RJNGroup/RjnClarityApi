@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace Clarity.RequestParameters
 {
-	public class DataTypesRequestParameters : IRequestParameters
+	public class RecordTypesRequestParameters : IRequestParameters
 	{
 
 		[Browsable(false)]

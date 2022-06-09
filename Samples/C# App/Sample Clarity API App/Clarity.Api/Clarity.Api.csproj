@@ -65,7 +65,7 @@
     <Compile Include="ResponseObjects\DataAttribute.cs" />
     <Compile Include="ResponseObjects\DataRecordInfo.cs" />
     <Compile Include="ResponseObjects\DataReportGroup.cs" />
-    <Compile Include="ResponseObjects\DataType.cs" />
+    <Compile Include="ResponseObjects\RecordType.cs" />
     <Compile Include="ResponseObjects\MonitorAlarm.cs" />
     <Compile Include="ResponseObjects\MonitorBattery.cs" />
     <Compile Include="ResponseObjects\MonitorDataPoint.cs" />
