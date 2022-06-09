@@ -54,8 +54,8 @@ var projects = api.GetProjects();
 
 ### Get a list of sites for one of the projects
 ```csharp
-			var MyProject = projects.Single((p) => p.projectnumber == "[My Project Number like XX-XXXX-XX]");
-			var sites = MyProject.GetMonitorSites(api);
+var MyProject = projects.Single((p) => p.projectnumber == "[My Project Number like XX-XXXX-XX]");
+var sites = MyProject.GetMonitorSites(api);
 ```
 
 ## Sample Projects
