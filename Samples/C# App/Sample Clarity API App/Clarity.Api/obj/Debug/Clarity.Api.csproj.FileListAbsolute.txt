@@ -2,7 +2,6 @@ C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\bin\De
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\bin\Debug\Clarity.Api.pdb
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\bin\Debug\Newtonsoft.Json.dll
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\bin\Debug\Newtonsoft.Json.xml
-C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\obj\Debug\Clarity.Api.csproj.AssemblyReference.cache
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\obj\Debug\Clarity.Api.csproj.CoreCompileInputs.cache
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\obj\Debug\Clarity.Api.csproj.CopyComplete
 C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\obj\Debug\Clarity.Api.dll

@@ -93,4 +93,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /E /Y "C:\Github\RjnClarityApi\Samples\C# App\Sample Clarity API App\Clarity.Api\bin\Release" "C:\Github\RjnClarityApi\Integration .NET"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
