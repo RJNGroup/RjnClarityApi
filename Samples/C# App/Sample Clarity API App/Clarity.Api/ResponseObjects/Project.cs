@@ -114,13 +114,33 @@ namespace Clarity.ResponseObjects
 		/// <param name="defect_types">A list of defect filters.</param>
 		/// <param name="modified_after">Filter for anything modified after this date.</param>
 		/// <returns>Returns an array of SsesDefectSummary objects.</returns>
-		public SsesDefectSummary[] GetDefectAnalysisSummary(Api api, string[] inspection_types = null, string[] defect_types = null, DateTime? modified_after = null) => api.GetDefectAnalysisSummary(id, inspection_types, defect_types, modified_after);
+		public SsesDefectSummary[] GetSsesDefectSummary(Api api, string[] inspection_types = null, string[] defect_types = null, DateTime? modified_after = null) => api.GetSsesDefectSummary(id, inspection_types, defect_types, modified_after);
 		
 		/// <summary>
 		/// For internal use.
 		/// </summary>
-		public SsesDefectAnalysisRequestParamters GetDefectAnalysisSummaryRequestParameters = new SsesDefectAnalysisRequestParamters();
+		public SsesDefectAnalysisRequestParamters GetSsesDefectSummaryRequestParameters = new SsesDefectAnalysisRequestParamters();
 
+		/// <summary>
+		/// Gets defects in the GeoJson format.
+		/// </summary>
+		/// <returns>Returns a string in json format.</returns>
+		public string GetSsesDefectGeoJson(Api api) => api.GetSsesDefectGeoJson(id);
+
+		/// <summary>
+		/// Gets a detailed list of defects.
+		/// </summary>
+		/// <param name="projectid">The project guid.</param>
+		/// <param name="inspection_types">A list of Inspection Type filters. (this can be optained using the GetRecordTypes() function.</param>
+		/// <param name="defect_types">A list of defect filters.</param>
+		/// <param name="modified_after">Filter for anything modified after this date.</param>
+		/// <returns>Returns an array of SsesDefectSummary objects.</returns>
+		public SsesDefect[] GetDefectList(Api api, string[] inspection_types = null, string[] defect_types = null, DateTime? modified_after = null) => api.GetDefectList(id, inspection_types, defect_types, modified_after);
+
+		/// <summary>
+		/// For internal use.
+		/// </summary>
+		public SsesDefectAnalysisRequestParamters GetDefectListRequestParameters = new SsesDefectAnalysisRequestParamters();
 
 		public override string ToString()
 		{

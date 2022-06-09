@@ -80,6 +80,7 @@
     <Compile Include="ResponseObjects\MonitorUnit.cs" />
     <Compile Include="ResponseObjects\Project.cs" />
     <Compile Include="ResponseObjects\ProjectProgress.cs" />
+    <Compile Include="ResponseObjects\SsesDefect.cs" />
     <Compile Include="ResponseObjects\SsesDefectSummary.cs" />
     <Compile Include="ResponseObjects\WorkOrder.cs" />
     <Compile Include="Utilities\ApiCaller.cs" />
