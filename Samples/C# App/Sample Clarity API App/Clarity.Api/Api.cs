@@ -442,5 +442,28 @@ namespace Clarity
             return ApiCaller.GetResponseJson<RdiiRainTakeoff[]>(_auth, $"/projects/{projectid}/storms/{duration}/takeoffs/{timeframe}");
         }
         #endregion
+
+        #region Source Defect Analysis
+
+        /// <summary>
+        /// Gets a summary by defect including total I/I contribution and number of instances.
+        /// </summary>
+        /// <param name="projectid">The project guid.</param>
+        /// <param name="inspection_types">A list of Inspection Type filters. (this can be optained using the GetRecordTypes() function.</param>
+        /// <param name="defect_types">A list of defect filters.</param>
+        /// <param name="modified_after">Filter for anything modified after this date.</param>
+        /// <returns>Returns an array of SsesDefectSummary objects.</returns>
+        public SsesDefectSummary[] GetDefectAnalysisSummary(Guid? projectid = null, string[] inspection_types = null, string[] defect_types = null, DateTime? modified_after = null)
+        {
+            //Create the query
+            var query = new Dictionary<string, string>();
+            if (projectid.HasValue) query.Add("projectid", projectid.Value.ToString());
+            if (inspection_types != null && inspection_types.Length > 0) query.Add("inspection_types", string.Join(",", inspection_types));
+            if (defect_types != null && defect_types.Length > 0) query.Add("defect_types", string.Join(",", defect_types));
+            if (modified_after.HasValue) query.Add("modified_after", FormatQueryDate(modified_after.Value));
+
+            return ApiCaller.GetResponseJson<SsesDefectSummary[]>(_auth, $"/defects/summary", query);
+        }
+        #endregion
     }
 }

@@ -190,6 +190,8 @@ namespace Sample_Clarity_API_App
 
 		private void dataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
+			if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
+
 			//Get the clicked cell
 			var cell = dataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
 			if (cell is DataGridViewButtonCell)
