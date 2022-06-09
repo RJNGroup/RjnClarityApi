@@ -42,17 +42,14 @@ To run in Postman:
 
 The "Integration .NET" folder contains an assembly that can be easily referenced into a .NET project. This allows implementation of the API with easy to use, high-level functions.
 
-### In VB
-```vb.net
+```csharp C#
+var api = new Clarity.Api("[Your client_id]", "[Your password]");
+var projects = api.GetProjects();
+```
+```vb.net VB.NET
 Dim api = new Clarity.Api("[Your client_id]", "[Your password]")
 Dim projects = api.GetProjects()
 
-```
-
-### In C#
-```csharp
-var api = new Clarity.Api("[Your client_id]", "[Your password]");
-var projects = api.GetProjects();
 ```
 
 ## Sample Projects
