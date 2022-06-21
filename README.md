@@ -107,5 +107,12 @@ To use the attribute_list extension feature, one must know what attributes are a
 ### GeoJSON
 The GeoJSON path (/clarity/{datatype}/geojson) facilitates easy integration with the ArcGIS JavaScript API or any other mapping application that accepts the standard GeoJson format. See the samples directory in this repository for some simple implementations to get you started.
 
+### Flow Monitoring Data
+Flow monitoring data is obtained using the /clarity/projects/{projectid}/entities/{entityid} route.
 
+The typical flow for drilling down to the data is this:
+1. Get a list of the projects: GET /clarity/projects
+2. Get a list of sites using one of the project guids: GET /clarity/projects/{projectid}/sites
+3. Get a list of entities. Here you have two options. a) GET /clarity/projects/{projectid}/sites/{siteid}/entities, which gets all entities for a site where the siteid is the site guid or b) GET /clarity/projects/{projectid}/entities/{entityname}, which gets all entities that match the entity name provided. Note that the entity name should be URL encoded, so "Final Flow" would be "Final+Flow" in the URL.
+4. Now the data may be queried using the "id" of the entity.  The id will be an integer value usually preceded by an "m" or "s", but not always.
 
