@@ -26,7 +26,7 @@ The sections below describe how to use the various resources at your disposal.
 
 To explore the API in Swagger:
 
-1. Navigate to the [Swagger](https://app.swaggerhub.com/apis/rjnclarity/RjnClarityRestApi/1.0.0) documentation.
+1. Navigate to the [Swagger](https://app.swaggerhub.com/apis/rjn_group/RjnClarityRestApi/1.0.0) documentation.
 2. Run the "POST /auth" route in the General category. Make sure to edit the body of the request, substituting your "client_id" and "password".
 3. Copy the "token" value in the response.
 4. Click the green "Authorize" button and paste the token in the "Value" field. Then click "Authorize".
